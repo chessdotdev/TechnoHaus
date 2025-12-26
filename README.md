@@ -1,5 +1,5 @@
 ### Test Api
-## Sample body 1
+## Products sample body 1
 ```
 {
   "CPU": "Intel Core i7",
@@ -12,7 +12,7 @@
 }
 
 ```
-## Sample body 2
+## Products sample body 2
 ```
 {
   "CPU": "Intel Core i9-12900K",
@@ -23,5 +23,15 @@
   "PSU": "1000W Be Quiet! Dark Power 12",
   "CASE": "Lian Li PC-011 Dynamic"
 }
+
+```
+
+## User sample body
+```
+{
+    "username": "",
+    "password": ""
+}
+
 
 ```

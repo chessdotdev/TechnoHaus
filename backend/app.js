@@ -4,7 +4,7 @@ import productsRouter from './routers/products.routes.js';
 import userRouter from './routers/user.route.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import verifyToken from './middleware/auth.middleware.js';
+import { verifyToken, checkIfValidToken } from './middleware/auth.middleware.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
 
 // Serve index.html publicly
-app.get('/', (req, res) => {
+app.get('/',checkIfValidToken, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 

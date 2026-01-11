@@ -34,4 +34,23 @@ const verifyToken = (req, res, next) =>{
     }
 }
 
-export default verifyToken;
+
+
+const checkIfValidToken = (req, res, next) => {
+    const token = req.cookies?.jwt;
+    if (!token) return next();
+  
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+
+        return next();
+      }
+
+      return res.redirect('/home');
+    });
+  };
+
+export {
+    verifyToken,
+    checkIfValidToken
+};

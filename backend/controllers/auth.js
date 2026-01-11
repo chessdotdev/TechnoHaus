@@ -31,7 +31,7 @@ const createUser = async (req, res)=>{
             loggedIn: false
         })
 
-        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET,{
+        const token = jwt.sign({userId: user._id, username: username}, process.env.JWT_SECRET,{
             expiresIn: '1h',
         })
 
@@ -76,7 +76,7 @@ const loginUser = async (req, res)=>{
             })
         }   
 
-        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET,{
+        const token = jwt.sign({userId: user._id, username: username}, process.env.JWT_SECRET,{
             expiresIn: '1h',
         })
 
@@ -111,7 +111,7 @@ const logoutUser = async (req, res)=>{
       res.clearCookie('jwt',  {
         httpOnly: true,
         sameSite: 'Strict'
-        
+
       })
     
         res.status(200).json({

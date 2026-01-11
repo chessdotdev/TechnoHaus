@@ -24,6 +24,7 @@ const verifyToken = (req, res, next) =>{
                 res.redirect('/')
             }else{
                 console.log(decodedToken);
+                // req.user = decodedToken; get current user
                 next()
             }
 

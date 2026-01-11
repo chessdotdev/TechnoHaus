@@ -1,4 +1,10 @@
 import { User } from "../models/user.model.js";
+import jwt from "jsonwebtoken";
+// import crypto from 'crypto';
+// // Generate a random 64-byte string and convert it to hexadecimal
+// const secret = crypto.randomBytes(64).toString('hex');
+// console.log('Generated Secret:', secret);
+
 
 const createUser = async (req, res)=>{
 
@@ -25,6 +31,15 @@ const createUser = async (req, res)=>{
             loggedIn: false
         })
 
+        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET,{
+            expiresIn: '1h',
+        })
+
+        res.cookie('jwt', token, {
+            maxAge:  60 * 1000, 
+            httpOnly: true
+        })
+
         res.status(201).json({
             message: "User Registered",
             user: {
@@ -46,7 +61,7 @@ const loginUser = async (req, res)=>{
         const { username, password } = req.body;
 
         const user = await User.findOne({username: username})
-
+     
         if(!user){
             return res.status(404).json({
                 message: "User not found"
@@ -59,14 +74,25 @@ const loginUser = async (req, res)=>{
             return res.status(400).json({
                 message: "Invalid credentials"
             })
-        }
+        }   
 
+        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET,{
+            expiresIn: '1h',
+        })
+
+        res.cookie("jwt", token, {
+            maxAge: 60 * 1000,  // Expires in 1 hour
+            httpOnly: true
+        })
+
+        console.log('Generated Token:', token);
         res.status(200).json({
             message: "User Logged In",
             user : {
                 id: user._id,
                 username: user.username
-            }
+            },
+            token
         })
 
     } catch (error) {
@@ -81,15 +107,12 @@ const loginUser = async (req, res)=>{
 const logoutUser = async (req, res)=>{
 
     try {
-        const { username } = req.body;
-
-        const user = await User.findOne({username: username})
-    
-        if(!user){
-            return res.status(404).json({
-                message: "User not found"
-            });
-        }
+      
+      res.clearCookie('jwt',  {
+        httpOnly: true,
+        sameSite: 'Strict'
+        
+      })
     
         res.status(200).json({
             message: "Logout Successfull"

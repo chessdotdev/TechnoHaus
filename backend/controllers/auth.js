@@ -36,7 +36,7 @@ const createUser = async (req, res)=>{
         })
 
         res.cookie('jwt', token, {
-            maxAge:  60 * 1000, 
+            maxAge:  60 * 60 * 1000, 
             httpOnly: true
         })
 
@@ -81,7 +81,7 @@ const loginUser = async (req, res)=>{
         })
 
         res.cookie("jwt", token, {
-            maxAge: 60 * 1000,  // Expires in 1 hour
+            maxAge: 60 * 60 * 1000,  // Expires in 1 hour
             httpOnly: true
         })
 

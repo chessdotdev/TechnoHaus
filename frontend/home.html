@@ -5,10 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
+<style>
+    .container {
+  max-width: 450px;
+  margin: auto;
+}
+
+.form-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.form-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.input-group input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+</style>
 <body>
      <h1>HOme</h1>
 
      <button id="logoutBtn">Logout</button>
+
+     <div class="container" id="container">
+        <div class="form-box add-products">
+          <h2>Add New PC Build</h2>
+      
+          <form id="addProducts-form">
+            
+            <div class="input-group">
+              <label for="cpu">CPU</label>
+              <input type="text" id="CPU" name="cpu" placeholder="e.g. Intel i7-13700K" required>
+            </div>
+      
+            <div class="input-group">
+              <label for="gpu">GPU</label>
+              <input type="text" id="GPU" name="gpu" placeholder="e.g. RTX 4070" required>
+            </div>
+      
+            <div class="input-group">
+              <label for="ram">RAM</label>
+              <input type="text" id="RAM" name="ram" placeholder="e.g. 16GB DDR5" required>
+            </div>
+      
+            <div class="input-group">
+              <label for="motherboard">Motherboard</label>
+              <input type="text" id="MOTHERBOARD" name="motherboard" placeholder="e.g. ASUS B760" required>
+            </div>
+      
+            <div class="input-group">
+              <label for="storage">Storage</label>
+              <input type="text" id="STORAGE" name="storage" placeholder="e.g. 1TB NVMe SSD" required>
+            </div>
+      
+            <div class="input-group">
+              <label for="psu">Power Supply (PSU)</label>
+              <input type="text" id="PSU" name="psu" placeholder="e.g. 750W Gold" required>
+            </div>
+      
+            <div class="input-group">
+              <label for="case">PC Case</label>
+              <input type="text" id="CASE" name="case" placeholder="e.g. NZXT H510" required>
+            </div>
+      
+            <button type="submit" class="btn-primary">Add Product</button>
+      
+          </form>
+        </div>
+      </div>
+      
 
 </body>
 <script>
@@ -21,5 +127,46 @@
         window.location.href = "/"; 
 
     })
+
+
+            document.getElementById("addProducts-form").addEventListener("submit", async (e) => {
+                e.preventDefault(); 
+
+                // Get values by ID
+                const CPU = document.getElementById("CPU").value;
+                const GPU = document.getElementById("GPU").value;
+                const RAM = document.getElementById("RAM").value;
+                const MOTHERBOARD = document.getElementById("MOTHERBOARD").value;
+                const STORAGE = document.getElementById("STORAGE").value;
+                const PSU = document.getElementById("PSU").value;
+                const PCCASE = document.getElementById("CASE").value;
+
+            try {
+                const response = await fetch("http://localhost:3000/api/products/create",{
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        CPU,
+                        GPU,
+                        RAM,
+                        MOTHERBOARD,
+                        STORAGE,
+                        PSU,
+                        PCCASE
+                    }),
+                });
+                const data = await response.json()
+                console.log(data);
+                
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong, please try again.");
+            }
+
+  });
+
+
 </script>
 </html>

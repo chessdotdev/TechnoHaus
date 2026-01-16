@@ -24,7 +24,7 @@ app.get('/',checkIfValidToken, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// Protected 
+// Protected routes
 app.get('/home',verifyToken, (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/home.html'));
 });

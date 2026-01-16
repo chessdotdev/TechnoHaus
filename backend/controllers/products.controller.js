@@ -13,19 +13,14 @@ const createProducts = async (req, res)=>{
                 PSU,
                 CASE
             });
+
+        
             // await newProducts.save();
             res.status(201).json({
-                message: "Product created successfully!", products: {
-                    id: newProducts._id,
-                    CPU: newProducts.CPU,
-                    GPU: newProducts.GPU,
-                    RAM: newProducts.RAM,
-                    MOTHERBOARD: newProducts.MOTHERBOARD,
-                    STORAGE: newProducts.STORAGE,
-                    PSU: newProducts.PSU,
-                    CASE: newProducts.CASE,
-
-                }
+                message: "Product created successfully!", 
+                products:{
+                    newProducts
+                } 
             });
         } catch (error) {
             console.error(error);

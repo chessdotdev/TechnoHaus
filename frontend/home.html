@@ -1,172 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/style/bootstrap.min.css">
+  <title>Home</title>
 </head>
 <style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+  }
+
+  #logoutBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #logoutBtn:hover {
+    background-color: #c82333;
+  }
+
+  /* Form Container Styles */
+  .container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-box h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+  }
+
+  .input-group {
+    margin-bottom: 15px;
+  }
+
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  /* Product Display Grid Layout */
+  .displayProducts {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 15px;
+  }
+
+  .displayProducts .items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 column grid */
+    gap: 20px;
+  }
+
+  /* Individual Product Item Card */
+  .product-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card h3 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #f4f7f6;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+
+  .product-card p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .product-card p strong {
+    color: #666;
+  }
+
+  @media (max-width: 992px) {
+    .displayProducts .items {
+      grid-template-columns: repeat(2, 1fr);
+      /* 2 columns on tablets */
+    }
+  }
+
+  @media (max-width: 600px) {
+    .displayProducts .items {
+      grid-template-columns: 1fr;
+      /* 1 column on mobile */
+    }
+
     .container {
-  max-width: 450px;
-  margin: auto;
-}
-
-.form-box {
-  background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.form-box h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-}
-
-.input-group label {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.input-group input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.input-group input:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  background: #007bff;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background: #0056b3;
-}
-
+      margin: 20px;
+    }
+  }
 </style>
+
 <body>
-     <h1>HOme</h1>
+  <button id="logoutBtn">Logout</button>
 
-     <button id="logoutBtn">Logout</button>
+  <div class="container" id="container">
+    <div class="form-box add-products">
+      <h2>Add New PC Build</h2>
 
-     <div class="container" id="container">
-        <div class="form-box add-products">
-          <h2>Add New PC Build</h2>
-      
-          <form id="addProducts-form">
-            
-            <div class="input-group">
-              <label for="cpu">CPU</label>
-              <input type="text" id="CPU" name="cpu" placeholder="e.g. Intel i7-13700K" required>
-            </div>
-      
-            <div class="input-group">
-              <label for="gpu">GPU</label>
-              <input type="text" id="GPU" name="gpu" placeholder="e.g. RTX 4070" required>
-            </div>
-      
-            <div class="input-group">
-              <label for="ram">RAM</label>
-              <input type="text" id="RAM" name="ram" placeholder="e.g. 16GB DDR5" required>
-            </div>
-      
-            <div class="input-group">
-              <label for="motherboard">Motherboard</label>
-              <input type="text" id="MOTHERBOARD" name="motherboard" placeholder="e.g. ASUS B760" required>
-            </div>
-      
-            <div class="input-group">
-              <label for="storage">Storage</label>
-              <input type="text" id="STORAGE" name="storage" placeholder="e.g. 1TB NVMe SSD" required>
-            </div>
-      
-            <div class="input-group">
-              <label for="psu">Power Supply (PSU)</label>
-              <input type="text" id="PSU" name="psu" placeholder="e.g. 750W Gold" required>
-            </div>
-      
-            <div class="input-group">
-              <label for="case">PC Case</label>
-              <input type="text" id="CASE" name="case" placeholder="e.g. NZXT H510" required>
-            </div>
-      
-            <button type="submit" class="btn-primary">Add Product</button>
-      
-          </form>
+      <form id="addProducts-form">
+
+        <div class="input-group">
+          <label for="cpu">CPU</label>
+          <input type="text" id="CPU" name="cpu" placeholder="e.g. Intel i7-13700K" required>
         </div>
-      </div>
-      
+
+        <div class="input-group">
+          <label for="gpu">GPU</label>
+          <input type="text" id="GPU" name="gpu" placeholder="e.g. RTX 4070" required>
+        </div>
+
+        <div class="input-group">
+          <label for="ram">RAM</label>
+          <input type="text" id="RAM" name="ram" placeholder="e.g. 16GB DDR5" required>
+        </div>
+
+
+        <div class="input-group">
+          <label for="storage">Storage</label>
+          <input type="text" id="STORAGE" name="storage" placeholder="e.g. 1TB NVMe SSD" required>
+        </div>
+
+
+        <div class="input-group">
+          <label for="case">PC Case</label>
+          <input type="text" id="CASE" name="case" placeholder="e.g. NZXT H510" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Add Product</button>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="displayProducts">
+    <div class="items">
+
+    </div>
+  </div>
 
 </body>
+<script src="assets/script/product.js"></script>
 <script>
-    const logoutBtn = document.getElementById('logoutBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
 
-    logoutBtn.addEventListener('click', async () =>{
-        const logout = await fetch('http://localhost:3000/api/user/logout',{
-            method: 'POST'
-        });
-        window.location.href = "/"; 
+  logoutBtn.addEventListener('click', async () => {
+    const logout = await fetch('http://localhost:3000/api/user/logout', {
+      method: 'POST'
+    });
+    window.location.href = "/";
 
-    })
+  })
+
+/* Refactoring */
+//   const api = {
+//     createProducts: ()=> 
+//      fetch("http://localhost:3000/api/products/create",{
+//       method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           CPU,
+//           GPU,
+//           RAM,
+//           STORAGE,
+//           CASE: PCCASE
+//         }),
+//     }).then(res => res.json()),
+
+//     getProducts: ()=> 
+//       fetch("http://localhost:3000/api/products/get").then(res => res.json()),
+
+//     updateProduct: ()=>
+//      fetch(`http://localhost:3000/api/products/updateProduct/${product._id}`,{
+//                  method: "PATCH",
+//                  headers: { 
+//                   "Content-Type": "application/json"
+//                  },
+//                  body: JSON.stringify(updateData)
+//                 }).then(res => res.json()),
 
 
-            document.getElementById("addProducts-form").addEventListener("submit", async (e) => {
-                e.preventDefault(); 
+//     deleteProduct: ()=>
+//       fetch(`http://localhost:3000/api/products/deleteProduct/${id}`, {
+//                 method: "DELETE"
+//               }).then(res => res.json()),
+    
+//   }
+ 
+//   const products = async()=>{
+//     const data = await api.getProducts();
+//     console.log(data);
+//     renderProducts(data.allProducts)
+    
+//   }
+//   products(); 
 
-                // Get values by ID
-                const CPU = document.getElementById("CPU").value;
-                const GPU = document.getElementById("GPU").value;
-                const RAM = document.getElementById("RAM").value;
-                const MOTHERBOARD = document.getElementById("MOTHERBOARD").value;
-                const STORAGE = document.getElementById("STORAGE").value;
-                const PSU = document.getElementById("PSU").value;
-                const PCCASE = document.getElementById("CASE").value;
+// function renderProducts(products) {
+//   const itemsContainer = document.querySelector(".items");
+//   itemsContainer.innerHTML = "";
 
-            try {
-                const response = await fetch("http://localhost:3000/api/products/create",{
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        CPU,
-                        GPU,
-                        RAM,
-                        MOTHERBOARD,
-                        STORAGE,
-                        PSU,
-                        PCCASE
-                    }),
-                });
-                const data = await response.json()
-                console.log(data);
-                
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Something went wrong, please try again.");
-            }
+//   products.forEach(product => {
+//     const div = document.createElement("div");
+//     div.className = "productItem";
 
-  });
+//     div.innerHTML = `
+//       <h3>${product._id}</h3>
+//       <p><strong>CPU:</strong> <span class="cpu-text">${product.CPU}</span></p>
+//       <p><strong>GPU:</strong> <span class="gpu-text">${product.GPU}</span></p>
+//       <p><strong>RAM:</strong> <span class="ram-text">${product.RAM}</span></p>
+//       <p><strong>Storage:</strong> <span class="storage-text">${product.STORAGE}</span></p>
+//       <p><strong>Case:</strong> <span class="case-text">${product.CASE}</span></p>
+
+//       <button class="editBtn">Edit</button>
+//       <button class="saveBtn" style="display:none;">Save</button>
+//       <button class="deleteBtn">Delete</button>
+//     `;
+
+//     itemsContainer.appendChild(div);
+//   });
+// }
+
+
+  
 
 
 </script>
+
 </html>

@@ -16,15 +16,7 @@ const productsSchema = new Schema(
             type: String,
             trim: true
         },
-        MOTHERBOARD:{
-            type: String,
-            trim: true
-        },
         STORAGE:{
-            type: String,
-            trim: true
-        },
-        PSU:{
             type: String,
             trim: true
         },

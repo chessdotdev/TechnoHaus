@@ -1,7 +1,5 @@
 document.getElementById("addProducts-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    // Get values by ID
     const CPU = document.getElementById("CPU").value;
     const GPU = document.getElementById("GPU").value;
     const RAM = document.getElementById("RAM").value;
@@ -33,13 +31,13 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
 
   });
 
+
   const products = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/products/get")
       const data = await response.json()
       const itemsContainer = document.querySelector(".items");
 
-      // Clear container in case there are previous items
       itemsContainer.innerHTML = "";
 
       data.allProducts.forEach(product => {
@@ -65,74 +63,11 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
          const saveBtn = productDiv.querySelector(".saveBtn")
         const deleteProduct = productDiv.querySelector(".deleteBtn")
 
-        editBtn.addEventListener('click',()=>{
-          productDiv.querySelector(".cpu-text").innerHTML = `<input value="${product.CPU}">`;
-          productDiv.querySelector(".gpu-text").innerHTML = `<input value="${product.GPU}">`;
-          productDiv.querySelector(".ram-text").innerHTML = `<input value="${product.RAM}">`;
-          productDiv.querySelector(".storage-text").innerHTML = `<input value="${product.STORAGE}">`;
-          productDiv.querySelector(".case-text").innerHTML = `<input value="${product.CASE}">`;
-
-          editBtn.style.display = "none";
-          saveBtn.style.display = "block"
-          deleteProduct.style.display = "none"
-        });
-
-        saveBtn.addEventListener('click', async ()=>{
-          console.log(product._id);
-            const updateData = {
-              CPU: productDiv.querySelector('.cpu-text input').value,
-              GPU: productDiv.querySelector(".gpu-text input").value,
-              RAM: productDiv.querySelector(".ram-text input").value,
-              STORAGE: productDiv.querySelector(".storage-text input").value,
-              CASE: productDiv.querySelector(".case-text input").value,
-            };
-
-            try {
-        
-                const response = await fetch(`http://localhost:3000/api/products/updateProduct/${product._id}`,{
-                 method: "PATCH",
-                 headers: { 
-                  "Content-Type": "application/json"
-                 },
-                 body: JSON.stringify(updateData)
-                })
-
-                const data = await response.json();
-                console.log(data);
-                
-                alert(data.message)
-                products()
-              
-            } catch (error) {
-              console.error("Error updating product:", error);
-              alert("Failed to update product.");
-            }
-
-
-        })
-
-        deleteProduct.addEventListener('click', async (e) => {
-            const id = e.target.getAttribute('data-id');
-            console.log(id)
-
-            try {
-
-              const deleteProduct = await fetch(`http://localhost:3000/api/products/deleteProduct/${id}`, {
-                method: "DELETE"
-              })
-              const deleteData = await deleteProduct.json();
-              alert(deleteData.message);
-              products();
-            } catch (error) {
-              console.error("Error deleting product:", error);
-              alert("Failed to delete product.");
-            }
-
-          });
+        editButton(editBtn, saveBtn, deleteProduct, productDiv, product);
+        saveButton(saveBtn,productDiv,product);
+        deleteButton(deleteProduct);
 
         itemsContainer.appendChild(productDiv);
-
-
       });
     } catch (error) {
 
@@ -140,12 +75,80 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
 
   }
 
+function editButton(editBtn, saveBtn, deleteProduct, productDiv, product){
+  editBtn.addEventListener('click',()=>{  
 
+    const fields = ["CPU", "GPU", "RAM", "STORAGE", "CASE"];
 
-  const test = { CPU: "Intel i7", RAM: "16GB" };
+    fields.forEach(field =>{
+      productDiv.querySelector(`.${field.toLocaleLowerCase()}-text`).innerHTML = `<input value="${product[field]}">`;
+      console.log(product[field]);
+      
+    })
+    editBtn.style.display = "none";
+    saveBtn.style.display = "block"
+    deleteProduct.style.display = "none"
+  });
+
+}
+
+function saveButton(saveBtn, productDiv, product){
+  saveBtn.addEventListener('click', async ()=>{
+    console.log(product._id);
+      const updateData = {
+        CPU: productDiv.querySelector('.cpu-text input').value,
+        GPU: productDiv.querySelector(".gpu-text input").value,
+        RAM: productDiv.querySelector(".ram-text input").value,
+        STORAGE: productDiv.querySelector(".storage-text input").value,
+        CASE: productDiv.querySelector(".case-text input").value,
+      };
+
+      try {
   
+          const response = await fetch(`http://localhost:3000/api/products/updateProduct/${product._id}`,{
+           method: "PATCH",
+           headers: { 
+            "Content-Type": "application/json"
+           },
+           body: JSON.stringify(updateData)
+          })
 
-  console.log(Object.keys(test));
-  
+          const data = await response.json();
+          
+          
+          alert(data.message)
+          products()
+        
+      } catch (error) {
+        console.error("Error updating product:", error);
+        alert("Failed to update product.");
+      }
+  })
+}
+
+function deleteButton(deleteProduct){
+  deleteProduct.addEventListener('click', async (e) => {
+    const id = e.target.getAttribute('data-id');
+    console.log(id)
+
+    try {
+
+      const deleteProduct = await fetch(`http://localhost:3000/api/products/deleteProduct/${id}`, {
+        method: "DELETE"
+      })
+      const deleteData = await deleteProduct.json();
+      alert(deleteData.message);
+      products();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Failed to delete product.");
+    }
+
+  });
+}
+
 
   products()
+
+    // const test = { CPU: "Intel i7", RAM: "16GB" };
+  // console.log(Object.keys(test));

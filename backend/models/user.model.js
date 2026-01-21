@@ -18,6 +18,11 @@ const userSchema = new Schema(
             minLength: 6,
             maxLength: 30
         },
+        role:{
+            type: String,
+            enum: ["admin", "customer"],
+            default: "customer"
+        },
 
     },
         {
@@ -27,7 +32,7 @@ const userSchema = new Schema(
 //hashing password
 userSchema.pre("save", async function(next){
     if(!this.isModified("password")){
-        return next;
+        return next();
     }
     this.password = await bcrypt.hash(this.password, 10);
 })

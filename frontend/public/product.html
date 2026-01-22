@@ -134,7 +134,14 @@
                     data.allProducts.forEach(product => {
                         const card = document.createElement('div');
                         card.classList.add('product-card');
+                        const img = document.createElement('img');
+                        img.src = product.image;
+                        img.alt = product.CPU;
+                        img.style.width = '100%';
+                        img.style.borderRadius = '8px';
+                        img.style.marginBottom = '15px';
 
+                        card.appendChild(img);
                         const details = document.createElement('div');
                         details.classList.add('product-details');
 
@@ -143,11 +150,13 @@
                         details.appendChild(title);
 
                
-                        const specs = ['CPU', 'GPU', 'RAM', 'STORAGE', 'CASE'];
+                        const specs = ['CPU', 'GPU', 'RAM', 'STORAGE', 'CASE', 'price'];
                         specs.forEach(spec => {
                             if (product[spec]) {
                                 const p = document.createElement('p');
+                                const image = document.createElement('img')
                                 p.innerHTML = `<strong>${spec}:</strong> ${product[spec]}`;
+                                
                                 details.appendChild(p);
                             }
                         });

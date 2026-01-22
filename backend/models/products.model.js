@@ -23,7 +23,16 @@ const productsSchema = new Schema(
         CASE:{
             type: String,
             trim: true
-        }
+        },
+        price: {
+            type: Number,
+            required: true,
+            min: 0
+          },
+        image: { 
+            type: String,
+            required: true 
+        } 
     }
 )
 

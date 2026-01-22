@@ -2,14 +2,16 @@ import { Products } from "../models/products.model.js";
 
 const createProducts = async (req, res)=>{
         try {
-            const { CPU, GPU, RAM, STORAGE, CASE } = req.body;
+            const { CPU, GPU, RAM, STORAGE, CASE, image, price} = req.body;
             
             const newProducts = await Products.create({ 
                 CPU,
                 GPU,
                 RAM,
                 STORAGE,
-                CASE
+                CASE,
+                price,
+                image
             });
 
         

@@ -5,6 +5,9 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
     const RAM = document.getElementById("RAM").value;
     const STORAGE = document.getElementById("STORAGE").value;
     const PCCASE = document.getElementById("CASE").value;
+    const product_price = document.getElementById("product-price").value;
+    const image = document.getElementById('product-image').value;
+    const price = Number(product_price)
 
     try {
       const response = await fetch("http://localhost:3000/api/products/create", {
@@ -17,7 +20,9 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
           GPU,
           RAM,
           STORAGE,
-          CASE: PCCASE
+          CASE: PCCASE,
+          price,
+          image
         }),
       });
       const data = await response.json()
@@ -41,6 +46,7 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
       itemsContainer.innerHTML = "";
 
       data.allProducts.forEach(product => {
+        
         const productDiv = document.createElement("div");
         productDiv.classList.add("productItem");
         productDiv.style.border = "1px solid #ccc";
@@ -48,12 +54,14 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
         productDiv.style.margin = "10px 0";
 
         productDiv.innerHTML = `
-                <h3>Product ID: ${product._id}</h3>
+                <img src="${product.image}" alt="Product Image" style="max-width:100%; height:auto; border-radius:4px; margin-bottom:10px;">
                 <p><strong>CPU:</strong> <span class="cpu-text">${product.CPU}</span></p>
                 <p><strong>GPU:</strong> <span class="gpu-text">${product.GPU}</span></p>
                 <p><strong>RAM:</strong> <span class="ram-text">${product.RAM}</span></p>
                 <p><strong>Storage:</strong> <span class="storage-text">${product.STORAGE}</span></p>
                 <p><strong>Case:</strong> <span class="case-text">${product.CASE}</span></p>
+                <p><strong>Price:</strong> <span class="price-text">${product.price}</span></p>
+
                 <button class="deleteBtn" data-id="${product._id}">Delete</button>
                 <button class="editBtn" data-id="${product._id}">Edit</button>
                  <button class="saveBtn" style="display:none;">Save</button>
@@ -77,8 +85,8 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
 
 function editButton(editBtn, saveBtn, deleteProduct, productDiv, product){
   editBtn.addEventListener('click',()=>{  
-
-    const fields = ["CPU", "GPU", "RAM", "STORAGE", "CASE"];
+    
+    const fields = ["CPU", "GPU", "RAM", "STORAGE", "CASE", "price"];
 
     fields.forEach(field =>{
       productDiv.querySelector(`.${field.toLocaleLowerCase()}-text`).innerHTML = `<input value="${product[field]}">`;
@@ -101,6 +109,7 @@ function saveButton(saveBtn, productDiv, product){
         RAM: productDiv.querySelector(".ram-text input").value,
         STORAGE: productDiv.querySelector(".storage-text input").value,
         CASE: productDiv.querySelector(".case-text input").value,
+        price: Number(productDiv.querySelector(".price-text input").value),
       };
 
       try {

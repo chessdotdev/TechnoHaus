@@ -4,35 +4,20 @@ import jwt from 'jsonwebtoken';
 const verifyToken = (req, res, next) =>{
     const token = req.cookies.jwt
     
-    // if(!token){
-    //     return res.status(401).json({ message: "No token, authorization denied" });
+    if(!token){
+        return res.status(401).json({ message: "No token, authorization denied" });
         
-    // }
-    
-    // try {
-    //     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    //     req.user = decoded;
-    //     next();
-    // } catch (error) {
-    //     return res.status(401).json({ message: "Invalid token" });
-    // }
-
-    if(token){
-        
-        jwt.verify(token, process.env.JWT_SECRET,(err, decodedToken)=>{
-            if(err){
-                res.redirect('/')
-            }else{
-                console.log(decodedToken);
-                // req.user = decodedToken; get current user
-                next()
-            }
-
-        })
-
-    }else{
-        res.redirect('/')
     }
+    
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        req.user = decoded;
+        // console.log(req.user);
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: "Invalid token" });
+    }
+
 }
 
 
@@ -42,12 +27,10 @@ const checkIfValidToken = (req, res, next) => {
     if (!token) return next();
   
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-
+        if (err) return next();
+        if (decoded.role === 'admin') return res.redirect('/home');
+        if (decoded.role === 'customer') return res.redirect('/product');
         return next();
-      }
-
-      return res.redirect('/home');
     });
   };
 

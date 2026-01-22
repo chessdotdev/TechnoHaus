@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { verifyToken, checkIfValidToken } from './middleware/auth.middleware.js';
 import cookieParser from 'cookie-parser';
+import checkRole from './middleware/role.permission.js';
 
 const app = express();
 
@@ -19,14 +20,17 @@ app.use(cookieParser());
 // Serve static frontend assets (css/js/images)
 app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
 
-// Serve index.html publicly
+// Serve html 
 app.get('/',checkIfValidToken, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // Protected routes
-app.get('/home',verifyToken, (req, res) => {
+app.get('/home',verifyToken,checkRole(["admin"]), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/home.html'));
+});
+app.get('/product',verifyToken,checkRole(["customer"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/product.html'));
 });
 
 // API routes

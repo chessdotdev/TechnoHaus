@@ -1,6 +1,17 @@
 const container = document.getElementById('container');
 const showRegister = document.getElementById('show-register');
 const showLogin = document.getElementById('show-login');
+// const logoutBtn = document.getElementById('logoutBtn');
+
+// logoutBtn.addEventListener('click', async () => {
+//   const logout = await fetch('http://localhost:3000/api/user/logout', {
+//     method: 'POST'
+//   });
+//   window.location.href = "/";
+
+// })
+
+
 
 showRegister.addEventListener('click', () => {
     container.classList.add('active');
@@ -95,11 +106,21 @@ loginForm.addEventListener("submit", async (e) => {
 
         if (response.status === 200) {
             alert(result.message);
-            // You can store the user data in localStorage or a cookie to persist login.
             document.getElementById("login-form").reset();
-            // Optionally, redirect the user to another page.
-            // window.location.href = "/home";  // Redirect to home page
-            location.assign('/home')
+            console.log(result.user.role);
+            
+           const role = result.user.role;
+       
+            // Redirect based on role
+            if (role === "admin") {
+                location.assign("/home"); 
+            } else if (role === "customer") {
+                location.assign("/product"); 
+            } else {
+                alert("Unknown role, cannot redirect.");
+            }
+
+       
 
         } else {
             alert(result.message);

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern E-Commerce Product List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        
+        .product-details {
+            margin-bottom: 20px;
+        }
+        .product-details h2 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+        .product-details p {
+            font-size: 1em;
+            margin: 5px 0;
+            color: #7f8c8d;
+        }
+        .product-details p strong {
+            color: #2c3e50;
+        }
+
+      
+        .add-to-cart {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .add-to-cart:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 600px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Product List</h1>
+    <div class="product-grid" id="product-grid"></div>
+
+    <script>
+        async function loadProducts() {
+            try {
+                const response = await fetch("http://localhost:3000/api/products/get");
+                const data = await response.json();
+
+                const productGrid = document.getElementById('product-grid');
+                productGrid.innerHTML = ''; 
+
+                if (data.allProducts && data.allProducts.length > 0) {
+                    data.allProducts.forEach(product => {
+                        const card = document.createElement('div');
+                        card.classList.add('product-card');
+
+                        const details = document.createElement('div');
+                        details.classList.add('product-details');
+
+                        const title = document.createElement('h2');
+                        title.textContent = `Build: ${product.CPU}`;
+                        details.appendChild(title);
+
+               
+                        const specs = ['CPU', 'GPU', 'RAM', 'STORAGE', 'CASE'];
+                        specs.forEach(spec => {
+                            if (product[spec]) {
+                                const p = document.createElement('p');
+                                p.innerHTML = `<strong>${spec}:</strong> ${product[spec]}`;
+                                details.appendChild(p);
+                            }
+                        });
+
+                        card.appendChild(details);
+
+                        // Add to Cart button
+                        const button = document.createElement('button');
+                        button.classList.add('add-to-cart');
+                        button.textContent = 'Add to Cart';
+                        button.addEventListener('click', () => {
+                            alert(`Added product ${product._id} to cart!`); 
+                        });
+                        card.appendChild(button);
+
+                        productGrid.appendChild(card);
+                    });
+                } else {
+                    productGrid.innerHTML = '<p>No products found.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                document.getElementById('product-grid').innerHTML = '<p>Error loading products. Please try again later.</p>';
+            }
+        }
+
+    
+        loadProducts();
+    </script>
+</body>
+</html>

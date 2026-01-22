@@ -210,5 +210,19 @@
 
 </body>
 <script src="assets/script/product.js"></script>
+<script>
+  const logoutBtn = document.getElementById('logoutBtn');
+
+logoutBtn.addEventListener('click', async () => {
+  const logout = await fetch('http://localhost:3000/api/user/logout', {
+    method: 'POST'
+  });
+  window.location.href = "/";
+
+})
+
+
+</script>
+
 
 </html>

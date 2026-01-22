@@ -113,7 +113,7 @@ loginForm.addEventListener("submit", async (e) => {
        
             // Redirect based on role
             if (role === "admin") {
-                location.assign("/home"); 
+                location.assign("/addproduct"); 
             } else if (role === "customer") {
                 location.assign("/product"); 
             } else {

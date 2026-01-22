@@ -22,15 +22,15 @@ app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
 
 // Serve html 
 app.get('/',checkIfValidToken, (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 
 // Protected routes
-app.get('/home',verifyToken,checkRole(["admin"]), (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/home.html'));
+app.get('/addproduct',verifyToken,checkRole(["admin"]), (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/addproduct.html'));
 });
-app.get('/product',verifyToken,checkRole(["customer"]), (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/product.html'));
+app.get('/product',verifyToken,checkRole(["admin","customer"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/product.html'));
 });
 
 // API routes

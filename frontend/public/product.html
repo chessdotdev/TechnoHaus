@@ -81,6 +81,22 @@
         .add-to-cart:hover {
             background-color: #2980b9;
         }
+        #logoutBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  #logoutBtn:hover {
+    background-color: #c82333;
+  }
 
         @media (max-width: 600px) {
             .product-grid {
@@ -90,10 +106,22 @@
     </style>
 </head>
 <body>
+    <button id="logoutBtn">Logout</button>
     <h1>Product List</h1>
     <div class="product-grid" id="product-grid"></div>
 
     <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    logoutBtn.addEventListener('click', async () => {
+    const logout = await fetch('http://localhost:3000/api/user/logout', {
+        method: 'POST'
+    });
+    window.location.href = "/";
+
+    })
+            
+
         async function loadProducts() {
             try {
                 const response = await fetch("http://localhost:3000/api/products/get");

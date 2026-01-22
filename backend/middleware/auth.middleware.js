@@ -5,8 +5,8 @@ const verifyToken = (req, res, next) =>{
     const token = req.cookies.jwt
     
     if(!token){
-        return res.status(401).json({ message: "No token, authorization denied" });
-        
+        // return res.status(401).json({ message: "No token, authorization denied" });
+        return res.redirect('/');   
     }
     
     try {
@@ -28,7 +28,7 @@ const checkIfValidToken = (req, res, next) => {
   
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) return next();
-        if (decoded.role === 'admin') return res.redirect('/home');
+        if (decoded.role === 'admin') return res.redirect('/addproduct');
         if (decoded.role === 'customer') return res.redirect('/product');
         return next();
     });

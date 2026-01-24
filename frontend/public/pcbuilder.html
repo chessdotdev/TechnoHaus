@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PC Build Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      object-fit: cover;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+    <h1>PC Build Generator</h1>
+
+    <input type="number" id="budget" placeholder="Enter your budget (PHP)" />
+    <textarea id="description" placeholder="Enter build description"></textarea>
+    <button onclick="generateBuild()">Generate Build</button>
+  
+    <div id="output"></div>
+
+    <script src="../assets/script/aibuilder.js"></script>
+</body>
+</html>

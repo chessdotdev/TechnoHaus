@@ -32,6 +32,9 @@ app.get('/addproduct',verifyToken,checkRole(["admin"]), (req, res) => {
 app.get('/product',verifyToken,checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/product.html'));
 });
+app.get('/pcbuilder',verifyToken,checkRole(["admin","customer"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/pcbuilder.html'));
+});
 
 // API routes
 app.use('/api/products', productsRouter);

@@ -10,7 +10,7 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
     const price = Number(product_price)
 
     try {
-      const response = await fetch("http://localhost:3000/api/products/create", {
+      const response = await fetch("https://technohaus.onrender.com/api/products/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ document.getElementById("addProducts-form").addEventListener("submit", async (e)
 
   const products = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/products/get")
+      const response = await fetch("https://technohaus.onrender.com/api/products/get")
       const data = await response.json()
       const itemsContainer = document.querySelector(".items");
 
@@ -114,7 +114,7 @@ function saveButton(saveBtn, productDiv, product){
 
       try {
   
-          const response = await fetch(`http://localhost:3000/api/products/updateProduct/${product._id}`,{
+          const response = await fetch(`https://technohaus.onrender.com/api/products/updateProduct/${product._id}`,{
            method: "PATCH",
            headers: { 
             "Content-Type": "application/json"
@@ -142,7 +142,7 @@ function deleteButton(deleteProduct){
 
     try {
 
-      const deleteProduct = await fetch(`http://localhost:3000/api/products/deleteProduct/${id}`, {
+      const deleteProduct = await fetch(`https://technohaus.onrender.com/api/products/deleteProduct/${id}`, {
         method: "DELETE"
       })
       const deleteData = await deleteProduct.json();

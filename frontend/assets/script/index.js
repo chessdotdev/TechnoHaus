@@ -4,7 +4,7 @@ const showLogin = document.getElementById('show-login');
 // const logoutBtn = document.getElementById('logoutBtn');
 
 // logoutBtn.addEventListener('click', async () => {
-//   const logout = await fetch('http://localhost:3000/api/user/logout', {
+//   const logout = await fetch('https://technohaus.onrender.com/api/user/logout', {
 //     method: 'POST'
 //   });
 //   window.location.href = "/";
@@ -50,7 +50,7 @@ registerForm.addEventListener("submit", async (e) => {
     const errorPassword = document.querySelector(".errorPassword")
 
     try {
-        const response = await fetch("http://localhost:3000/api/user/register", {
+        const response = await fetch("https://technohaus.onrender.com/api/user/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -91,7 +91,7 @@ loginForm.addEventListener("submit", async (e) => {
     const password = document.getElementById("login-password").value;
 
     try {
-        const response = await fetch("http://localhost:3000/api/user/login", {
+        const response = await fetch("https://technohaus.onrender.com/api/user/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

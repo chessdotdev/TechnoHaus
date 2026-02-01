@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 import { verifyToken, checkIfValidToken } from './middleware/auth.middleware.js';
 import cookieParser from 'cookie-parser';
 import checkRole from './middleware/role.permission.js';
-
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);

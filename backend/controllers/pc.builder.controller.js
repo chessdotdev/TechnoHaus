@@ -32,7 +32,7 @@ const generateBuild = async (req, res) => {
  
     const products = await Products.find({
       price: { $lte: maxPrice },
-    }).select("CPU GPU RAM STORAGE CASE price image");
+    }).select("_id CPU GPU RAM STORAGE CASE price image");
 
 
     if (!products.length) {
@@ -68,6 +68,7 @@ const generateBuild = async (req, res) => {
 
         RETURN ONLY VALID JSON in this structure:
         {
+        "_id": "",
         "CPU": "",
         "GPU": "",
         "RAM": "",
@@ -104,6 +105,7 @@ const generateBuild = async (req, res) => {
       });
     }
     if (
+        !build._id &&
         !build.CPU &&
         !build.GPU &&
         !build.RAM &&
@@ -115,6 +117,7 @@ const generateBuild = async (req, res) => {
           message: `No valid build found within your budget of ${budgetNum} PHP`,
         });
       }
+  console.log(build);
   
     return res.status(200).json({ 
         data: build

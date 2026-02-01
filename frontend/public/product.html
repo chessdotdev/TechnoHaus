@@ -121,13 +121,15 @@
     window.location.href = "/";
 
     })
-            
-
         async function loadProducts() {
             try {
-                const response = await fetch("http://localhost:3000/api/products/get");
+                const response = await fetch("http://localhost:3000/api/products/get",{
+                    method: "GET",
+                    credentials: "include" 
+                });
+             
                 const data = await response.json();
-
+               
                 const productGrid = document.getElementById('product-grid');
                 productGrid.innerHTML = ''; 
 

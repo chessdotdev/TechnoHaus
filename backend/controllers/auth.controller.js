@@ -39,7 +39,8 @@ const createUser = async (req, res)=>{
             maxAge:  60 * 60 * 1000, 
             httpOnly: true
         })
-
+            console.log("User Register");
+            
         res.status(201).json({
             message: "User Registered",
             user: {
@@ -50,6 +51,8 @@ const createUser = async (req, res)=>{
         })
         
     } catch (error) {
+        console.error("Register Error:", error);
+
         res.status(500).json({ 
             message: "Internal Server Error", error: error.message 
         });   
@@ -107,7 +110,7 @@ const loginUser = async (req, res)=>{
 
 
 const logoutUser = async (req, res)=>{
-
+   
     try {
       
       res.clearCookie('jwt',  {
@@ -115,7 +118,8 @@ const logoutUser = async (req, res)=>{
         sameSite: 'Strict',
         secure: true
       })
-    
+      
+      console.log("Logout Successfull");
         res.status(200).json({
             message: "Logout Successfull"
         });

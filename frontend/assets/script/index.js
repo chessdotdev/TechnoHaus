@@ -10,7 +10,7 @@ const showLogin = document.getElementById('show-login');
 //   window.location.href = "/";
 
 // })
-
+const BASE_URL = '';
 
 
 showRegister.addEventListener('click', () => {
@@ -50,7 +50,7 @@ registerForm.addEventListener("submit", async (e) => {
     const errorPassword = document.querySelector(".errorPassword")
 
     try {
-        const response = await fetch("http://localhost:3000/api/user/register", {
+        const response = await fetch(`${BASE_URL}/api/user/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -91,7 +91,7 @@ loginForm.addEventListener("submit", async (e) => {
     const password = document.getElementById("login-password").value;
 
     try {
-        const response = await fetch("http://localhost:3000/api/user/login", {
+        const response = await fetch(`${BASE_URL}/api/user/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

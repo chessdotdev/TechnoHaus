@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #456882;
+    background: #222831 ;
 }
 
 .container {
@@ -96,6 +96,17 @@ input:valid ~ label {
 
 input:focus {
     border-bottom: 2px solid #fff;
+}
+
+/* autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    -webkit-text-fill-color: #fff !important;
+    caret-color: #fff;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .forgot-password {

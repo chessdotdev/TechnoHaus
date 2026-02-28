@@ -6,7 +6,7 @@ async function generateBuild() {
     output.innerHTML = "Loading...";
   
     try {
-      const response = await fetch("https://technohaus.onrender.com/api/products/build", { // Replace with your backend URL
+      const response = await fetch("http://localhost:3000/api/products/build", { // Replace with your backend URL
         method: "POST",
         headers: {
           "Content-Type": "application/json"

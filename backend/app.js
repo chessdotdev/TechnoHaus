@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import productsRouter from './routers/products.routes.js';
 import userRouter from './routers/user.route.js';
+import cartRouter from './routers/cart.route.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { verifyToken, checkIfValidToken } from './middleware/auth.middleware.js';
@@ -34,10 +35,14 @@ app.get('/product',verifyToken,checkRole(["admin","customer"]), (req, res) => {
 app.get('/pcbuilder',verifyToken,checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/pcbuilder.html'));
 });
+app.get('/cart',verifyToken,checkRole(["admin","customer"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/cart.html'));
+});
 
 // API routes
 app.use('/api/products', productsRouter);
 app.use('/api/user', userRouter);
 
+app.use('/api/cart',verifyToken, cartRouter)
 
 export default app;

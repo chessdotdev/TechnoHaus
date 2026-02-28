@@ -654,13 +654,16 @@
   </div>
 
   <script>
-    // ----- Logout -----
+    const BASE_URL = '';
+    // ----- Logout ----
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       try {
-        await fetch('http://localhost:3000/api/user/logout', { method: 'POST', credentials: 'include' });
+        await fetch(`${BASE_URL}/api/user/logout`, { method: 'POST', credentials: 'include' });
         window.location.href = '/';
       } catch { alert('Logout failed. Please try again.'); }
     });
+
+    
 
     // ----- Override generateBuild to use styled output -----
     async function generateBuild() {
@@ -690,7 +693,7 @@
         </div>`;
 
       try {
-        const response = await fetch('http://localhost:3000/api/products/build', {
+        const response = await fetch(`${BASE_URL}/api/products/build`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -795,7 +798,7 @@
           addBtn.innerHTML = `<span style="width:14px;height:14px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block"></span> ADDING...`;
 
           try {
-            const res = await fetch('http://localhost:3000/api/cart/add', {
+            const res = await fetch(`${BASE_URL}/api/cart/add`, {
               method: 'POST',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },

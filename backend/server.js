@@ -12,7 +12,7 @@ const startServer = async () => {
     try {
 
         await connectDB();
-            console.log("MONGO URI:", process.env.MONGODB_URI)
+            // console.log("MONGO URI:", process.env.MONGODB_URI)
 
         app.on("error", (error) => {
             throw error;

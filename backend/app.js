@@ -20,22 +20,28 @@ app.use(cookieParser());
 // Serve static frontend assets (css/js/images)
 app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
 
-// Serve html 
-app.get('/',checkIfValidToken, (req, res) => {
+const noCache = (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+};
+
+//Protected routes
+app.get('/', noCache, checkIfValidToken, (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 
-// Protected routes
-app.get('/addproduct',verifyToken,checkRole(["admin"]), (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/public/addproduct.html'));
+app.get('/addproduct', noCache, verifyToken, checkRole(["admin"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/addproduct.html'));
 });
-app.get('/product',verifyToken,checkRole(["admin","customer"]), (req, res) => {
+app.get('/product', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/product.html'));
 });
-app.get('/pcbuilder',verifyToken,checkRole(["admin","customer"]), (req, res) => {
+app.get('/pcbuilder', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/pcbuilder.html'));
 });
-app.get('/cart',verifyToken,checkRole(["admin","customer"]), (req, res) => {
+app.get('/cart', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/cart.html'));
 });
 

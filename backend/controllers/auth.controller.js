@@ -8,8 +8,8 @@ import jwt from "jsonwebtoken";
 
 const createUser = async (req, res)=>{
 
-    try {
-        const {username, password} = req.body;
+    try {   
+        const { username, password, fullName, email, phone, address } = req.body;
 
         if(!username || !password){
             return res.status(400).json({
@@ -24,10 +24,26 @@ const createUser = async (req, res)=>{
                 message: "Username is already exist"
             })
         }
+
+        const existingPhone = await User.findOne({ phone });
+        if (existingPhone) {
+            return res.status(400).json({ message: "Phone number already in use" });
+        }
+
+        if (email) {
+            const existingEmail = await User.findOne({ email });
+            if (existingEmail) {
+                return res.status(400).json({ message: "Email already in use" });
+            }
+        }
     
         const user = await User.create({
             username,
             password,
+            fullName,
+            email,
+            phone,
+            address,
             loggedIn: false
         })
 
@@ -37,7 +53,9 @@ const createUser = async (req, res)=>{
 
         res.cookie('jwt', token, {
             maxAge:  60 * 60 * 1000, 
-            httpOnly: true
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict'
         })
             console.log("User Register");
             
@@ -46,6 +64,9 @@ const createUser = async (req, res)=>{
             user: {
                 id: user._id,
                 username: user.username,
+                fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
                 role: user.role
             }
         })
@@ -86,7 +107,9 @@ const loginUser = async (req, res)=>{
 
         res.cookie("jwt", token, {
             maxAge: 60 * 60 * 1000,  // Expires in 1 hour
-            httpOnly: true
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict'
         })
 
         console.log('Generated Token:', token);
@@ -96,8 +119,7 @@ const loginUser = async (req, res)=>{
                 id: user._id,
                 username: user.username,
                 role: user.role
-            },
-            token
+            }
         })
 
     } catch (error) {

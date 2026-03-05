@@ -23,6 +23,31 @@ const userSchema = new Schema(
             enum: ["admin", "customer"],
             default: "customer"
         },
+        fullName: {
+            type: String,
+            trim: true,
+            maxLength: 50
+        },
+        email: {
+            type: String,
+            unique: true,
+            sparse: true,   // allows multiple null values
+            lowercase: true,
+            trim: true
+        },
+        phone: {
+            type: String,
+            unique: true,
+            required: true,
+            trim: true
+        },
+        address: {
+            street:   { type: String, trim: true, required: true },
+            city:     { type: String, trim: true, required: true },
+            province: { type: String, trim: true, required: true },
+            zipCode:  { type: String, trim: true, required: true },
+            country:  { type: String, trim: true, default: 'Philippines', required: true }
+        },
 
     },
         {

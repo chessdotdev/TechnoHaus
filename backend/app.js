@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import productsRouter from './routers/products.routes.js';
 import userRouter from './routers/user.route.js';
-import cartRouter from './routers/cart.route.js'
+import cartRouter from './routers/cart.route.js';
+import profileRouter from './routers/profile.route.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { verifyToken, checkIfValidToken } from './middleware/auth.middleware.js';
@@ -44,11 +45,14 @@ app.get('/pcbuilder', noCache, verifyToken, checkRole(["admin","customer"]), (re
 app.get('/cart', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/cart.html'));
 });
+app.get('/profile', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/profile.html'));
+});
 
 // API routes
 app.use('/api/products', productsRouter);
 app.use('/api/user', userRouter);
-
 app.use('/api/cart',verifyToken, cartRouter)
+app.use('/api/profile', verifyToken, profileRouter);
 
 export default app;

@@ -590,23 +590,44 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="../assets/style/mobile.css">
+
 </head>
 
 <body>
 
-  <!-- Top bar -->
+  <!-- Desktop  -->
   <div class="top-bar">
     <a href="/pcbuilder" class="logo">
       <i class="bi bi-cpu-fill"></i> AI PC BUILDER
     </a>
     <div class="top-right">
-      <a href="/product" class="nav-link"><i class="bi bi-grid"></i> Catalog</a>
+      <a href="/product" class="nav-link"><i class="bi bi-grid"></i> Products</a>
       <a href="/cart" class="nav-link"><i class="bi bi-cart3"></i> Cart</a>
       <button class="btn-logout" id="logoutBtn">
         <i class="bi bi-box-arrow-right"></i> Logout
       </button>
     </div>
   </div>
+
+    <!-- Mobile -->
+    <nav class="bottom-nav">
+      <div class="bottom-nav-inner">
+        <a href="/product" class="bnav-item">
+          <i class="bi bi-grid-3x3-gap-fill"></i>Products
+        </a>
+        <a href="/pcbuilder" class="bnav-item active">
+          <i class="bi bi-stars"></i>AI BUILD
+        </a>
+        <a href="/cart" class="bnav-item">
+          <span class="bnav-badge" id="cart-count-mobile">0</span>
+          <i class="bi bi-cart3"></i>CART
+        </a>
+        <a href="/profile" class="bnav-item">
+          <i class="bi bi-person-circle"></i>PROFILE
+        </a>
+      </div>
+    </nav>
 
   <div class="main">
 

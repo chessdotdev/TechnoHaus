@@ -79,8 +79,8 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const province = document.getElementById('register-province').value.trim();
   const zipCode  = document.getElementById('register-zipcode').value.trim();
 
-  if (!username || !password || !phone || address) {
-    showError('register', 'Username, password, phone and address are required.');
+  if (!username || !password || !phone) {
+    showError('register', 'Username, password and phone are required.');
     return;
   }
 

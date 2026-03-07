@@ -110,7 +110,35 @@
     gap: 1.5rem;
     align-items: start;
   }
-
+  .cart-select {
+    display: flex;
+    align-items: center;
+    padding-right: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  .item-checkbox {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  
+  .select-all-bar {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.75rem 0;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem; letter-spacing: 1.5px;
+    color: var(--muted);
+  }
+  
+  .select-all-bar input {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  
   /* --- Loading skeleton --- */
   #loading-state { display: block; }
 

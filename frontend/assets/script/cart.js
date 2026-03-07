@@ -21,23 +21,31 @@ const fmt = (n) => new Intl.NumberFormat('en-PH', { style: 'currency', currency:
 // ---- Cart state ----
 let cartData = { items: [] };
 
-function getTotal() {
-  return cartData.items.reduce((sum, item) => sum + (item.product?.price || 0) * item.quantity, 0);
-}
-
 function updateCartCount() {
   document.getElementById('cart-count').textContent = cartData.items.length;
   document.getElementById('cart-count-mobile').textContent = cartData.items.length;
-
 }
 
-// ---- Render summary ----
+// ---- Get checked IDs ----
+function getCheckedIds() {
+  return [...document.querySelectorAll('.item-checkbox:checked')]
+    .map(cb => cb.dataset.id);
+}
+
+// ---- Render summary (only checked items) ----
 function renderSummary() {
   const lines   = document.getElementById('summary-lines');
   const totalEl = document.getElementById('summary-total');
 
-  lines.innerHTML = cartData.items.map(item => {
-    const name  = item.product?.CPU || 'Custom Build';
+  const checkedIds = getCheckedIds();
+
+  const selectedItems = cartData.items.filter(item =>
+    checkedIds.includes(String(item.product?._id || item.product))
+  );
+
+  // show only selected in summary lines
+  lines.innerHTML = selectedItems.map(item => {
+    const name  = item.product?.CPU || item.product?.name || 'Custom Build';
     const price = item.product?.price || 0;
     return `
       <div class="summary-row">
@@ -46,7 +54,11 @@ function renderSummary() {
       </div>`;
   }).join('');
 
-  totalEl.textContent = fmt(getTotal());
+  // total only from selected
+  const total = selectedItems.reduce((sum, item) =>
+    sum + (item.product?.price || 0) * item.quantity, 0);
+
+  totalEl.textContent = fmt(total);
 }
 
 // ---- Render cart ----
@@ -69,6 +81,16 @@ function renderCart() {
   emptyEl.style.display = 'none';
   list.innerHTML = '';
 
+  // ── Select all bar ──
+  const selectAllBar = document.createElement('div');
+  selectAllBar.className = 'select-all-bar';
+  selectAllBar.innerHTML = `
+    <input type="checkbox" id="select-all" checked>
+    <label for="select-all">SELECT ALL</label>
+  `;
+  list.appendChild(selectAllBar);
+
+  // ── Cards ──
   cartData.items.forEach((item, index) => {
     const p      = item.product || {};
     const price  = p.price || 0;
@@ -80,16 +102,20 @@ function renderCart() {
     card.style.animationDelay = `${index * 80}ms`;
 
     card.innerHTML = `
+      <div class="cart-select">
+        <input type="checkbox" class="item-checkbox" data-id="${itemId}" checked>
+      </div>
       ${p.image
         ? `<img src="${p.image}" alt="${p.CPU || 'Build'}">`
         : `<div class="no-img-placeholder"><i class="bi bi-pc-display"></i></div>`
       }
       <div class="cart-item-body">
-        <div class="item-title">${p.CPU || 'CUSTOM BUILD'}</div>
+        <div class="item-title">${p.CPU || p.name || 'CUSTOM BUILD'}</div>
         <div class="specs-mini">
           ${p.GPU     ? `<span>GPU: ${p.GPU}</span>` : ''}
           ${p.RAM     ? `<span>RAM: ${p.RAM}</span>` : ''}
-          ${p.STORAGE ? `<span>${p.STORAGE}</span>` : ''}
+          ${p.STORAGE ? `<span>${p.STORAGE}</span>`  : ''}
+          ${p.brand   ? `<span>${p.brand}</span>`    : ''}
         </div>
         <div class="cart-item-footer">
           <div class="qty-control">
@@ -110,12 +136,33 @@ function renderCart() {
     list.appendChild(card);
   });
 
+  // ── Attach listeners AFTER all cards are in DOM ──
+
+  // qty buttons
   list.querySelectorAll('.qty-btn').forEach(btn => {
     btn.onclick = () => handleQuantity(btn.dataset.id, btn.dataset.action, btn);
   });
 
+  // remove buttons
   list.querySelectorAll('.btn-remove').forEach(btn => {
     btn.onclick = () => handleRemove(btn.dataset.id, btn);
+  });
+
+  // individual checkboxes
+  list.querySelectorAll('.item-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const allChecked = [...document.querySelectorAll('.item-checkbox')].every(c => c.checked);
+      document.getElementById('select-all').checked = allChecked;
+      renderSummary();
+    });
+  });
+
+  // select all
+  document.getElementById('select-all').addEventListener('change', function () {
+    document.querySelectorAll('.item-checkbox').forEach(cb => {
+      cb.checked = this.checked;
+    });
+    renderSummary();
   });
 
   renderSummary();
@@ -225,6 +272,11 @@ async function loadCart() {
 
 // ---- Checkout ----
 document.getElementById('checkoutBtn').onclick = () => {
+  const checked = getCheckedIds();
+  if (checked.length === 0) {
+    showToast('Please select at least one item!', 'error');
+    return;
+  }
   showToast('Checkout coming soon!', 'success');
 };
 

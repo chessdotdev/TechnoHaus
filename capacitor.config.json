@@ -1,0 +1,17 @@
+{
+  "appId": "com.technohaus.app",
+  "appName": "TechnoHaus",
+  "webDir": "frontend/public",
+  "server": {
+    "url": "https://technohaus.onrender.com",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "backgroundColor": "#07090d",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
+}

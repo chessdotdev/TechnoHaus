@@ -1,53 +1,6 @@
-:root {
-    --bg:      #07090d;
-    --surface: #0d1117;
-    --card:    #111820;
-    --border:  #1e2d3d;
-    --accent:  #00d4ff;
-    --accent2: #0055ff;
-    --success: #00e676;
-    --danger:  #ff4444;
-    --text:    #e2e8f0;
-    --muted:   #64748b;
-  }
-  
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-  }
-  
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
-    background-size: 44px 44px;
-    pointer-events: none;
-    z-index: 0;
-  }
-  
-  /* ── Top bar ── */
-  .top-bar {
-    background: rgba(13,17,23,0.92);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  
+
   .top-left { display: flex; align-items: center; gap: 1.25rem; }
-  .top-right { display: flex; align-items: center; gap: 1.25rem; }
+  
   
   .back-link {
     color: var(--muted);

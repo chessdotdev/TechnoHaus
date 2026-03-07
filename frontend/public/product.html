@@ -7,12 +7,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/style/global.css">
   <link rel="stylesheet" href="../assets/style/product.css">
   <link rel="stylesheet" href="../assets/style/mobile.css">
 </head>
 <body>
 
-  <!-- Desktop  -->
+  <!-- Desktop Top Bar -->
   <div class="top-bar">
     <a href="/product" class="logo"><i class="bi bi-cpu-fill"></i> TECHNOHAUS</a>
     <div class="top-right">
@@ -26,11 +27,11 @@
     </div>
   </div>
 
-  <!-- Mobile -->
+  <!-- Mobile Bottom Nav -->
   <nav class="bottom-nav">
     <div class="bottom-nav-inner">
       <a href="/product" class="bnav-item active">
-        <i class="bi bi-grid-3x3-gap-fill"></i>Products
+        <i class="bi bi-grid-3x3-gap-fill"></i>CATALOG
       </a>
       <a href="/pcbuilder" class="bnav-item">
         <i class="bi bi-stars"></i>AI BUILD
@@ -46,135 +47,388 @@
   </nav>
 
   <div class="main">
-    <div class="page-header">
-      <div class="page-pill"><i class="bi bi-grid-3x3-gap"></i> Products</div>
-      <h1>PC Builds</h1>
-      <p>Browse our curated collection of pre-configured builds</p>
+     <!-- Controls bar -->
+     <div class="controls-bar">
+      <div class="search-wrap">
+        <i class="bi bi-search"></i>
+        <input type="text" class="search-input" id="search-input" placeholder="Search by CPU, GPU, name, brand...">
+      </div>
+      <!-- Desktop: select dropdown -->
+      <select class="desktop-sort" id="desktop-sort">
+        <option value="">SORT: DEFAULT</option>
+        <option value="price-asc">PRICE: LOW → HIGH</option>
+        <option value="price-desc">PRICE: HIGH → LOW</option>
+        <option value="newest">NEWEST FIRST</option>
+      </select>
+      <!-- Mobile: sheet buttons -->
+      <button class="btn-filter" id="btn-filter" onclick="openSheet('filter-sheet')">
+        <i class="bi bi-sliders"></i> FILTER
+        <span class="filter-badge" id="filter-badge">0</span>
+      </button>
+      <button class="btn-sort" id="btn-sort" onclick="openSheet('sort-sheet')">
+        <i class="bi bi-arrow-down-up"></i> SORT
+      </button>
     </div>
+
+    <div class="page-header">
+      <div class="page-pill"><i class="bi bi-grid-3x3-gap"></i> CATALOG</div>
+      <h1>Products</h1>
+      <p>Browse our curated collection of PC builds and peripherals</p>
+    </div>
+
+   
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      <button class="cat-tab active" data-cat="">ALL</button>
+      <button class="cat-tab" data-cat="PC Build">PC BUILD</button>
+      <button class="cat-tab" data-cat="Peripheral">PERIPHERAL</button>
+      <button class="cat-tab" data-cat="Monitor">MONITOR</button>
+      <button class="cat-tab" data-cat="Component">COMPONENT</button>
+    </div>
+
+    <!-- Results info -->
+    <div class="results-info" id="results-info" style="display:none">
+      SHOWING <span id="results-count">0</span> RESULTS
+    </div>
+
+    <!-- Product grid -->
     <div class="product-grid" id="product-grid">
       <div class="product-card"><div class="skeleton" style="height:200px"></div><div class="product-body"><div class="skeleton mb-3" style="height:13px;width:70%"></div><div class="skeleton mb-2" style="height:10px"></div><div class="skeleton mb-2" style="height:10px;width:80%"></div><div class="skeleton" style="height:34px;border-radius:8px"></div></div></div>
       <div class="product-card"><div class="skeleton" style="height:200px"></div><div class="product-body"><div class="skeleton mb-3" style="height:13px;width:60%"></div><div class="skeleton mb-2" style="height:10px;width:90%"></div><div class="skeleton" style="height:34px;border-radius:8px"></div></div></div>
       <div class="product-card"><div class="skeleton" style="height:200px"></div><div class="product-body"><div class="skeleton mb-3" style="height:13px;width:75%"></div><div class="skeleton mb-2" style="height:10px"></div><div class="skeleton" style="height:34px;border-radius:8px"></div></div></div>
     </div>
+
+  </div>
+
+  <!-- Overlay -->
+  <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+
+  <!-- Filter Bottom Sheet -->
+  <div class="bottom-sheet" id="filter-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title"><i class="bi bi-sliders"></i> FILTER</div>
+      <button class="sheet-close" onclick="closeSheet()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-section">
+        <div class="sheet-section-title">PRICE RANGE (₱)</div>
+        <div class="price-inputs">
+          <input type="number" class="price-input" id="min-price" placeholder="Min price">
+          <input type="number" class="price-input" id="max-price" placeholder="Max price">
+        </div>
+      </div>
+    </div>
+    <div class="sheet-footer">
+      <button class="btn-reset" onclick="resetFilters()">RESET</button>
+      <button class="btn-apply" onclick="applySheetFilters()">APPLY</button>
+    </div>
+  </div>
+
+  <!-- Sort Bottom Sheet -->
+  <div class="bottom-sheet" id="sort-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title"><i class="bi bi-arrow-down-up"></i> SORT BY</div>
+      <button class="sheet-close" onclick="closeSheet()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="sheet-body">
+      <button class="sort-option active" data-sort="" onclick="selectSort(this, '')">Default</button>
+      <button class="sort-option" data-sort="price-asc" onclick="selectSort(this, 'price-asc')">Price: Low → High</button>
+      <button class="sort-option" data-sort="price-desc" onclick="selectSort(this, 'price-desc')">Price: High → Low</button>
+      <button class="sort-option" data-sort="newest" onclick="selectSort(this, 'newest')">Newest First</button>
+    </div>
   </div>
 
   <div class="toast-container" id="toast-container"></div>
   <script src="../assets/script/scrollreveal.min.js"></script>
+ 
   <script>
     const BASE_URL = '';
+    let allProducts  = [];
+    let activeCategory = '';
+    let activeSort   = '';
+    let minPrice     = null;
+    let maxPrice     = null;
 
-    function showToast(msg, type='success'){
-      const c=document.getElementById('toast-container');
-      const icon=type==='success'?'bi-check-circle-fill':'bi-exclamation-triangle-fill';
-      const el=document.createElement('div');
-      el.className=`toast-item ${type}`;
-      el.innerHTML=`<i class="bi ${icon}"></i> ${msg}`;
+    // ---- Toast ----
+    function showToast(msg, type = 'success') {
+      const c = document.getElementById('toast-container');
+      const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+      const el = document.createElement('div');
+      el.className = `toast-item ${type}`;
+      el.innerHTML = `<i class="bi ${icon}"></i> ${msg}`;
       c.appendChild(el);
-      setTimeout(()=>{el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(()=>el.remove(),300);},3000);
+      setTimeout(() => { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
     }
 
-    const cartItems=new Set();
-    function updateCartCount(){
-      const n=cartItems.size;
-      document.getElementById('cart-count-desktop').textContent=n;
-      document.getElementById('cart-count-mobile').textContent=n;
+    // ---- Cart ----
+    const cartItems = new Set();
+
+    function updateCartCount() {
+      const n = cartItems.size;
+      document.getElementById('cart-count-desktop').textContent = n;
+      document.getElementById('cart-count-mobile').textContent = n;
     }
 
-    async function fetchCartState(){
-      try{
-        const res=await fetch('/api/cart/get',{credentials:'include'});
-        if(!res.ok)return;
-        const d=await res.json();
-        (d.cart?.items||[]).forEach(i=>{const id=i.product?._id||i.product;if(id)cartItems.add(String(id));});
+    async function fetchCartState() {
+      try {
+        const res = await fetch('/api/cart/get', { credentials: 'include' });
+        if (!res.ok) return;
+        const d = await res.json();
+        (d.cart?.items || []).forEach(i => { const id = i.product?._id || i.product; if (id) cartItems.add(String(id)); });
         updateCartCount();
-      }catch(e){console.error(e);}
+      } catch (e) { console.error(e); }
     }
 
-    async function addToCart(productId,btn,quantity=1){
-      const already=cartItems.has(String(productId));
-      btn.disabled=true;
-      btn.innerHTML=`<span style="width:12px;height:12px;border:2px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:inline-block"></span> ADDING...`;
-      try{
-        const res=await fetch('/api/cart/add',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({productId,quantity})});
-        const data=await res.json();
-        if(!res.ok){showToast(data.message||'Failed','error');flipBtn(btn,productId);return;}
+    async function addToCart(productId, btn, quantity = 1) {
+      const already = cartItems.has(String(productId));
+      btn.disabled = true;
+      btn.innerHTML = `<span style="width:12px;height:12px;border:2px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:inline-block"></span> ADDING...`;
+      try {
+        const res = await fetch('/api/cart/add', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId, quantity }) });
+        const data = await res.json();
+        if (!res.ok) { showToast(data.message || 'Failed', 'error'); flipBtn(btn, productId); return; }
         cartItems.add(String(productId));
         updateCartCount();
-        showToast(already?`Quantity updated +${quantity}!`:`Added to cart (×${quantity})!`,'success');
-        flipBtn(btn,productId);
-      }catch(e){showToast('Network error.','error');flipBtn(btn,productId);}
+        showToast(already ? `Quantity updated +${quantity}!` : `Added to cart (×${quantity})!`, 'success');
+        flipBtn(btn, productId);
+      } catch (e) { showToast('Network error.', 'error'); flipBtn(btn, productId); }
     }
 
-    function flipBtn(btn,productId){
-      btn.disabled=false;
-      const inCart=cartItems.has(String(productId));
-      btn.className='btn-add-cart'+(inCart?' added':'');
-      btn.innerHTML=inCart?`<i class="bi bi-cart-check"></i> ADD AGAIN`:`<i class="bi bi-cart-plus"></i> ADD TO CART`;
-      btn.onclick=()=>{
-        const qtyEl=document.querySelector(`[data-qty-id="${productId}"]`);
-        addToCart(productId,btn,parseInt(qtyEl?.textContent||'1'));
+    function flipBtn(btn, productId) {
+      btn.disabled = false;
+      const inCart = cartItems.has(String(productId));
+      btn.className = 'btn-add-cart' + (inCart ? ' added' : '');
+      btn.innerHTML = inCart ? `<i class="bi bi-cart-check"></i> ADD AGAIN` : `<i class="bi bi-cart-plus"></i> ADD TO CART`;
+      btn.onclick = () => {
+        const qtyEl = document.querySelector(`[data-qty-id="${productId}"]`);
+        addToCart(productId, btn, parseInt(qtyEl?.textContent || '1'));
       };
     }
 
-    document.getElementById('logoutBtn').addEventListener('click',async()=>{
-      await fetch('/api/user/logout',{method:'POST',credentials:'include'});
-      location.href='/';
+    // ---- Bottom sheet ----
+    function openSheet(id) {
+      document.getElementById('sheet-overlay').classList.add('show');
+      document.getElementById(id).classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSheet() {
+      document.getElementById('sheet-overlay').classList.remove('show');
+      document.querySelectorAll('.bottom-sheet').forEach(s => s.classList.remove('show'));
+      document.body.style.overflow = '';
+    }
+
+    // ---- Sort (mobile sheet) ----
+    function selectSort(btn, value) {
+      document.querySelectorAll('.sort-option').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSort = value;
+      const labels = { '': 'SORT', 'price-asc': 'LOW→HIGH', 'price-desc': 'HIGH→LOW', 'newest': 'NEWEST' };
+      const sortBtn = document.getElementById('btn-sort');
+      sortBtn.innerHTML = `<i class="bi bi-arrow-down-up"></i> ${labels[value]}`;
+      sortBtn.classList.toggle('active', value !== '');
+      closeSheet();
+      applyFilters();
+    }
+
+    // ---- Filter sheet apply ----
+    function applySheetFilters() {
+      minPrice = document.getElementById('min-price').value ? Number(document.getElementById('min-price').value) : null;
+      maxPrice = document.getElementById('max-price').value ? Number(document.getElementById('max-price').value) : null;
+      const count = (minPrice !== null || maxPrice !== null) ? 1 : 0;
+      const badge = document.getElementById('filter-badge');
+      badge.textContent = count;
+      badge.classList.toggle('show', count > 0);
+      document.getElementById('btn-filter').classList.toggle('active', count > 0);
+      closeSheet();
+      applyFilters();
+    }
+
+    // ---- Reset filters ----
+    function resetFilters() {
+      minPrice = null; maxPrice = null;
+      document.getElementById('min-price').value = '';
+      document.getElementById('max-price').value = '';
+      document.getElementById('filter-badge').classList.remove('show');
+      document.getElementById('btn-filter').classList.remove('active');
+      closeSheet();
+      applyFilters();
+    }
+
+    // ---- Category tabs ----
+    document.querySelectorAll('.cat-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeCategory = tab.dataset.cat;
+        applyFilters();
+      });
     });
 
-    async function loadProducts(){
-      try{
-        await fetchCartState();
-        const res=await fetch('/api/products/get',{credentials:'include'});
-        if(!res.ok)throw new Error();
-        const data=await res.json();
-        const grid=document.getElementById('product-grid');
-        grid.innerHTML='';
-        if(!data.allProducts?.length){
-          grid.innerHTML=`<div class="state-wrap"><i class="bi bi-inbox state-icon"></i><div class="state-title">NO BUILDS FOUND</div></div>`;
-          return;
+    // ---- Desktop sort listener ----
+    document.getElementById('desktop-sort').addEventListener('change', function () {
+      activeSort = this.value;
+      applyFilters();
+    });
+
+    // ---- Search listener ----
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+
+    // ---- Apply all filters ----
+    function applyFilters() {
+      const search = document.getElementById('search-input').value.toLowerCase().trim();
+      let filtered = [...allProducts];
+
+      if (activeCategory) filtered = filtered.filter(p => p.category === activeCategory);
+
+      if (search) {
+        filtered = filtered.filter(p =>
+          (p.CPU         || '').toLowerCase().includes(search) ||
+          (p.GPU         || '').toLowerCase().includes(search) ||
+          (p.RAM         || '').toLowerCase().includes(search) ||
+          (p.STORAGE     || '').toLowerCase().includes(search) ||
+          (p.name        || '').toLowerCase().includes(search) ||
+          (p.brand       || '').toLowerCase().includes(search) ||
+          (p.description || '').toLowerCase().includes(search) ||
+          (p.category    || '').toLowerCase().includes(search)
+        );
+      }
+
+      if (minPrice !== null) filtered = filtered.filter(p => p.price >= minPrice);
+      if (maxPrice !== null) filtered = filtered.filter(p => p.price <= maxPrice);
+
+      if (activeSort === 'price-asc')  filtered.sort((a, b) => a.price - b.price);
+      if (activeSort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+      if (activeSort === 'newest')     filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      const isFiltering = search || activeCategory || activeSort || minPrice !== null || maxPrice !== null;
+      const info = document.getElementById('results-info');
+      info.style.display = isFiltering ? 'block' : 'none';
+      document.getElementById('results-count').textContent = filtered.length;
+
+      renderProducts(filtered);
+    }
+
+    // ---- Render ----
+    function renderProducts(products) {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = '';
+
+      if (!products.length) {
+        grid.innerHTML = `
+          <div class="state-wrap">
+            <i class="bi bi-search state-icon"></i>
+            <div class="state-title">NO RESULTS FOUND</div>
+            <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem">Try a different search or category</p>
+          </div>`;
+        return;
+      }
+
+      products.forEach((product, index) => {
+        const productId = String(product._id);
+        const cat = product.category || 'PC Build';
+        const catClass = cat.toLowerCase().replace(' ', '-');
+        const isPCBuild = cat === 'PC Build';
+        const title = isPCBuild ? (product.CPU || 'CUSTOM BUILD') : (product.name || product.brand || 'PRODUCT');
+        const price = product.price ? new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(product.price) : '—';
+
+        let specsHTML = '';
+        if (isPCBuild) {
+          specsHTML = `
+            ${product.CPU     ? `<li><span class="spec-key">CPU</span><span class="spec-val">${product.CPU}</span></li>`         : ''}
+            ${product.GPU     ? `<li><span class="spec-key">GPU</span><span class="spec-val">${product.GPU}</span></li>`         : ''}
+            ${product.RAM     ? `<li><span class="spec-key">RAM</span><span class="spec-val">${product.RAM}</span></li>`         : ''}
+            ${product.STORAGE ? `<li><span class="spec-key">Storage</span><span class="spec-val">${product.STORAGE}</span></li>` : ''}
+            ${product.CASE    ? `<li><span class="spec-key">Case</span><span class="spec-val">${product.CASE}</span></li>`       : ''}`;
+        } else {
+          specsHTML = `
+            ${product.brand       ? `<li><span class="spec-key">Brand</span><span class="spec-val">${product.brand}</span></li>`      : ''}
+            ${product.description ? `<li><span class="spec-key">Info</span><span class="spec-val">${product.description}</span></li>` : ''}`;
         }
-        data.allProducts.forEach((product,index)=>{
-          const productId=String(product._id);
-          const price=product.price?new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP'}).format(product.price):'—';
-          const card=document.createElement('div');
-          card.className='product-card';
-          card.style.animationDelay=`${index*60}ms`;
-          card.innerHTML=`
-            ${product.image?`<img class="product-img" src="${product.image}" alt="${product.CPU||'PC Build'}">`:`<div class="product-img-placeholder"><i class="bi bi-pc-display"></i></div>`}
-            <div class="product-body">
-              <div class="product-title">${product.CPU||'CUSTOM BUILD'}</div>
-              <ul class="specs-list">
-                ${product.CPU?`<li><span class="spec-key">CPU</span><span class="spec-val">${product.CPU}</span></li>`:''}
-                ${product.GPU?`<li><span class="spec-key">GPU</span><span class="spec-val">${product.GPU}</span></li>`:''}
-                ${product.RAM?`<li><span class="spec-key">RAM</span><span class="spec-val">${product.RAM}</span></li>`:''}
-                ${product.STORAGE?`<li><span class="spec-key">Storage</span><span class="spec-val">${product.STORAGE}</span></li>`:''}
-                ${product.CASE?`<li><span class="spec-key">Case</span><span class="spec-val">${product.CASE}</span></li>`:''}
-              </ul>
-              <div class="product-footer">
-                <div class="price-row"><span class="price-label">PRICE</span><span class="price-value">${price}</span></div>
-                <div class="qty-control">
-                  <button class="qty-btn" data-dir="dec">−</button>
-                  <span class="qty-value" data-qty-id="${productId}">1</span>
-                  <button class="qty-btn" data-dir="inc">+</button>
-                </div>
-                <div class="btn-slot"></div>
+
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.animationDelay = `${index * 60}ms`;
+        card.style.position = 'relative';
+
+        card.innerHTML = `
+          <span class="category-tag ${catClass}">${cat.toUpperCase()}</span>
+          ${product.image
+            ? `<img class="product-img" src="${product.image}" alt="${title}">`
+            : `<div class="product-img-placeholder"><i class="bi bi-pc-display"></i></div>`}
+          <div class="product-body">
+            <div class="product-title">${title}</div>
+            <ul class="specs-list">${specsHTML}</ul>
+            <div class="product-footer">
+              <div class="price-row">
+                <span class="price-label">PRICE</span>
+                <span class="price-value">${price}</span>
               </div>
-            </div>`;
-          grid.appendChild(card);
-          card.querySelector('[data-dir="dec"]').onclick=()=>{const el=card.querySelector(`[data-qty-id="${productId}"]`);const c=parseInt(el.textContent);if(c>1)el.textContent=c-1;};
-          card.querySelector('[data-dir="inc"]').onclick=()=>{const el=card.querySelector(`[data-qty-id="${productId}"]`);el.textContent=parseInt(el.textContent)+1;};
-          const btn=document.createElement('button');
-          flipBtn(btn,productId);
-          card.querySelector('.btn-slot').appendChild(btn);
+              <div class="qty-control">
+                <button class="qty-btn" data-dir="dec">−</button>
+                <span class="qty-value" data-qty-id="${productId}">1</span>
+                <button class="qty-btn" data-dir="inc">+</button>
+              </div>
+              <div class="btn-slot"></div>
+            </div>
+          </div>`;
+
+        grid.appendChild(card);
+
+        card.querySelector('[data-dir="dec"]').onclick = () => {
+          const el = card.querySelector(`[data-qty-id="${productId}"]`);
+          const c = parseInt(el.textContent);
+          if (c > 1) el.textContent = c - 1;
+        };
+
+        card.querySelector('[data-dir="inc"]').onclick = () => {
+          const el = card.querySelector(`[data-qty-id="${productId}"]`);
+          el.textContent = parseInt(el.textContent) + 1;
+        };
+
+        const btn = document.createElement('button');
+        flipBtn(btn, productId);
+        card.querySelector('.btn-slot').appendChild(btn);
+      });
+
+      setTimeout(() => {
+        ScrollReveal().reveal('.product-card', {
+          origin: 'bottom', distance: '40px', duration: 700,
+          easing: 'cubic-bezier(0.68,-0.55,0.265,1.55)',
+          interval: 60, reset: false
         });
-        setTimeout(()=>{
-          ScrollReveal().reveal('.product-card',{origin:'bottom',distance:'40px',duration:700,easing:'cubic-bezier(0.68,-0.55,0.265,1.55)',interval:60,reset:false});
-        },100);
-      }catch(e){
-        document.getElementById('product-grid').innerHTML=`<div class="state-wrap"><i class="bi bi-exclamation-triangle state-icon" style="color:var(--danger)"></i><div class="state-title" style="color:var(--danger)">FAILED TO LOAD</div></div>`;
+      }, 100);
+    }
+
+    // -------- Load ----
+    async function loadProducts() {
+      try {
+        await fetchCartState();
+        const res = await fetch('/api/products/get', { credentials: 'include' });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        allProducts = data.allProducts || [];
+        applyFilters();
+      } catch (e) {
+        document.getElementById('product-grid').innerHTML = `
+          <div class="state-wrap">
+            <i class="bi bi-exclamation-triangle state-icon" style="color:var(--danger)"></i>
+            <div class="state-title" style="color:var(--danger)">FAILED TO LOAD</div>
+          </div>`;
       }
     }
+
+   // ---- Logout ----
+   document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/user/logout', { method: 'POST', credentials: 'include' });
+      location.href = '/';
+    });
+    
     loadProducts();
   </script>
+  <script src="../assets/script/drag.sheet.js"></script>
 </body>
 </html>

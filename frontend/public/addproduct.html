@@ -1,238 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/style/bootstrap.min.css">
-  <title>Home</title>
+  <title>Admin – Add Product | TechnoHaus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/style/global.css">
+  <link rel="stylesheet" href="../assets/style/addproduct.css">
 </head>
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    margin: 0;
-    padding: 20px;
-  }
-
-  #logoutBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 8px 16px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  #logoutBtn:hover {
-    background-color: #c82333;
-  }
-
-  /* Form Container Styles */
-  .container {
-    max-width: 600px;
-    margin: 40px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .form-box h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #2c3e50;
-  }
-
-  .input-group {
-    margin-bottom: 15px;
-  }
-
-  .input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #555;
-  }
-
-  .input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-
-  .input-group input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-  }
-
-  .btn-primary {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-
-  /* Product Display Grid Layout */
-  .displayProducts {
-    max-width: 1200px;
-    margin: 50px auto;
-    padding: 0 15px;
-  }
-
-  .displayProducts .items {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* 3 column grid */
-    gap: 20px;
-  }
-
-  /* Individual Product Item Card */
-  .product-card {
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .product-card h3 {
-    margin-top: 0;
-    color: #007bff;
-    font-size: 1.2rem;
-    border-bottom: 2px solid #f4f7f6;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-  }
-
-  .product-card p {
-    margin: 8px 0;
-    font-size: 0.95rem;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .product-card p strong {
-    color: #666;
-  }
-
-  @media (max-width: 992px) {
-    .displayProducts .items {
-      grid-template-columns: repeat(2, 1fr);
-      /* 2 columns on tablets */
-    }
-  }
-
-  @media (max-width: 600px) {
-    .displayProducts .items {
-      grid-template-columns: 1fr;
-      /* 1 column on mobile */
-    }
-
-    .container {
-      margin: 20px;
-    }
-  }
-</style>
-
 <body>
-  <button id="logoutBtn">Logout</button>
 
-  <div class="container" id="container">
-    <div class="form-box add-products">
-      <h2>Add New PC Build</h2>
+  <div class="top-bar">
+    <div style="display:flex;align-items:center;gap:1rem">
+      <a href="/addproduct" class="logo"><i class="bi bi-cpu-fill"></i> TECHNOHAUS</a>
+      <span class="admin-badge"><i class="bi bi-shield-fill"></i> ADMIN</span>
+    </div>
+    <div class="top-right">
+      <button class="btn-logout" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="page-header">
+      <div class="page-pill"><i class="bi bi-tools"></i> ADMIN PANEL</div>
+      <h1>Product Management</h1>
+      <p>Add, edit, and manage product listings</p>
+    </div>
+
+    <!-- ── Add Product Form ── -->
+    <div class="form-card">
+      <div class="form-title"><i class="bi bi-plus-circle"></i> ADD NEW PRODUCT</div>
+
+      <div class="form-error" id="form-error">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span id="form-error-text"></span>
+      </div>
 
       <form id="addProducts-form">
-
         <div class="input-group">
-          <label for="cpu">CPU</label>
-          <input type="text" id="CPU" name="cpu" placeholder="e.g. Intel i7-13700K" required>
+          <label><i class="bi bi-tag"></i> CATEGORY</label>
+          <select id="category">
+            <option value="PC Build">PC Build</option>
+            <option value="Peripheral">Peripheral</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Component">Component</option>
+          </select>
         </div>
 
-        <div class="input-group">
-          <label for="gpu">GPU</label>
-          <input type="text" id="GPU" name="gpu" placeholder="e.g. RTX 4070" required>
+        <div class="fields-pcbuild active" id="fields-pcbuild">
+          <div class="input-group">
+            <label><i class="bi bi-cpu"></i> CPU</label>
+            <input type="text" id="CPU" placeholder="e.g. Intel i7-13700K">
+          </div>
+          <div class="input-group">
+            <label><i class="bi bi-gpu-card"></i> GPU</label>
+            <input type="text" id="GPU" placeholder="e.g. RTX 4070 Ti">
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label><i class="bi bi-memory"></i> RAM</label>
+              <input type="text" id="RAM" placeholder="e.g. 32GB DDR5">
+            </div>
+            <div class="input-group">
+              <label><i class="bi bi-device-ssd"></i> STORAGE</label>
+              <input type="text" id="STORAGE" placeholder="e.g. 1TB NVMe">
+            </div>
+          </div>
+          <div class="input-group">
+            <label><i class="bi bi-box"></i> PC CASE</label>
+            <input type="text" id="CASE" placeholder="e.g. NZXT H510">
+          </div>
         </div>
 
-        <div class="input-group">
-          <label for="ram">RAM</label>
-          <input type="text" id="RAM" name="ram" placeholder="e.g. 16GB DDR5" required>
+        <div class="fields-other" id="fields-other">
+          <div class="input-group">
+            <label><i class="bi bi-tag"></i> PRODUCT NAME</label>
+            <input type="text" id="name" placeholder="e.g. Logitech G Pro X">
+          </div>
+          <div class="input-group">
+            <label><i class="bi bi-building"></i> BRAND</label>
+            <input type="text" id="brand" placeholder="e.g. Logitech">
+          </div>
+          <div class="input-group">
+            <label><i class="bi bi-card-text"></i> DESCRIPTION</label>
+            <textarea id="description" placeholder="Short product description..."></textarea>
+          </div>
         </div>
 
-
-        <div class="input-group">
-          <label for="storage">Storage</label>
-          <input type="text" id="STORAGE" name="storage" placeholder="e.g. 1TB NVMe SSD" required>
+        <div class="input-row">
+          <div class="input-group">
+            <label><i class="bi bi-currency-dollar"></i> PRICE (₱)</label>
+            <input type="number" id="product-price" placeholder="e.g. 75000">
+          </div>
+          <div class="input-group">
+            <label><i class="bi bi-image"></i> IMAGE URL</label>
+            <input type="text" id="product-image" placeholder="https://...">
+          </div>
         </div>
 
-
-        <div class="input-group">
-          <label for="case">PC Case</label>
-          <input type="text" id="CASE" name="case" placeholder="e.g. NZXT H510" required>
+        <div class="img-preview" id="img-preview">
+          <div class="img-preview-placeholder">
+            <i class="bi bi-card-image"></i>
+            <span>Preview will appear here</span>
+          </div>
         </div>
 
-        <div class="input-group">
-          <label for="product-price">Price</label>
-          <input type="number" id="product-price" name="product-price" placeholder="e.g. NZXT H510" required>
-        </div>
-
-        <div class="input-group">
-          <label for="product-image">Image</label>
-          <input type="text" id="product-image" name="image" placeholder="Image URL" required />
-        </div>
-
-        <button type="submit" class="btn-primary">Add Product</button>
-
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <i class="bi bi-plus-lg"></i> ADD PRODUCT
+        </button>
       </form>
     </div>
-  </div>
 
-  <div class="displayProducts">
-    <div class="items">
+    <!-- ── Products Panel ── -->
+    <div class="products-panel">
+
+      <div class="panel-header">
+        <div class="panel-title"><i class="bi bi-grid-3x3-gap"></i> ALL PRODUCTS</div>
+        <span class="product-count" id="product-count">0 products</span>
+      </div>
+
+      <!-- Controls bar — all in one row -->
+      <div class="controls-bar">
+        <div class="search-wrap">
+          <i class="bi bi-search"></i>
+          <input type="text" class="search-input" id="search-input" placeholder="Search by name, CPU, GPU, brand...">
+        </div>
+        <!-- Desktop selects -->
+        <select class="filter-select" id="filter-category">
+          <option value="">ALL CATEGORIES</option>
+          <option value="PC Build">PC BUILD</option>
+          <option value="Peripheral">PERIPHERAL</option>
+          <option value="Monitor">MONITOR</option>
+          <option value="Component">COMPONENT</option>
+        </select>
+        <select class="filter-select" id="filter-sort">
+          <option value="">SORT: DEFAULT</option>
+          <option value="price-asc">PRICE: LOW → HIGH</option>
+          <option value="price-desc">PRICE: HIGH → LOW</option>
+          <option value="newest">NEWEST FIRST</option>
+        </select>
+        <!-- Mobile buttons -->
+        <button class="btn-filter" id="btn-filter" onclick="openSheet('filter-sheet')">
+          <i class="bi bi-sliders"></i> FILTER
+          <span class="filter-badge" id="filter-badge">0</span>
+        </button>
+        <button class="btn-sort" id="btn-sort" onclick="openSheet('sort-sheet')">
+          <i class="bi bi-arrow-down-up"></i> SORT
+        </button>
+      </div>
+
+      <div class="product-grid" id="product-grid">
+        <div class="product-card"><div class="skeleton" style="height:160px"></div><div class="card-body"><div class="skeleton mb-2" style="height:11px;width:70%"></div><div class="skeleton mb-2" style="height:9px"></div><div class="skeleton" style="height:30px;border-radius:7px;margin-top:0.75rem"></div></div></div>
+        <div class="product-card"><div class="skeleton" style="height:160px"></div><div class="card-body"><div class="skeleton mb-2" style="height:11px;width:60%"></div><div class="skeleton mb-2" style="height:9px;width:90%"></div><div class="skeleton" style="height:30px;border-radius:7px;margin-top:0.75rem"></div></div></div>
+        <div class="product-card"><div class="skeleton" style="height:160px"></div><div class="card-body"><div class="skeleton mb-2" style="height:11px;width:75%"></div><div class="skeleton mb-2" style="height:9px;width:85%"></div><div class="skeleton" style="height:30px;border-radius:7px;margin-top:0.75rem"></div></div></div>
+      </div>
 
     </div>
   </div>
 
+  <!-- Overlay -->
+  <div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+
+  <!-- Filter Bottom Sheet -->
+  <div class="bottom-sheet" id="filter-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title"><i class="bi bi-sliders"></i> FILTER</div>
+      <button class="sheet-close" onclick="closeSheet()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-section">
+        <div class="sheet-section-title">CATEGORY</div>
+        <button class="cat-option active" data-cat=""           onclick="selectCat(this, '')">All Categories</button>
+        <button class="cat-option" data-cat="PC Build"   onclick="selectCat(this, 'PC Build')">PC Build</button>
+        <button class="cat-option" data-cat="Peripheral" onclick="selectCat(this, 'Peripheral')">Peripheral</button>
+        <button class="cat-option" data-cat="Monitor"    onclick="selectCat(this, 'Monitor')">Monitor</button>
+        <button class="cat-option" data-cat="Component"  onclick="selectCat(this, 'Component')">Component</button>
+      </div>
+      <div class="sheet-section">
+        <div class="sheet-section-title">PRICE RANGE (₱)</div>
+        <div class="price-inputs">
+          <input type="number" class="price-input" id="min-price" placeholder="Min price">
+          <input type="number" class="price-input" id="max-price" placeholder="Max price">
+        </div>
+      </div>
+    </div>
+    <div class="sheet-footer">
+      <button class="btn-reset" onclick="resetFilters()">RESET</button>
+      <button class="btn-apply" onclick="applySheetFilters()">APPLY</button>
+    </div>
+  </div>
+
+  <!-- Sort Bottom Sheet -->
+  <div class="bottom-sheet" id="sort-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title"><i class="bi bi-arrow-down-up"></i> SORT BY</div>
+      <button class="sheet-close" onclick="closeSheet()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="sheet-body">
+      <button class="sort-option active" data-sort=""           onclick="selectSort(this, '')">Default</button>
+      <button class="sort-option" data-sort="price-asc"  onclick="selectSort(this, 'price-asc')">Price: Low → High</button>
+      <button class="sort-option" data-sort="price-desc" onclick="selectSort(this, 'price-desc')">Price: High → Low</button>
+      <button class="sort-option" data-sort="newest"     onclick="selectSort(this, 'newest')">Newest First</button>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="../assets/script/addproduct.js"></script>
+  <script src="../assets/script/drag.sheet.js"></script>
 </body>
-<script src="assets/script/addproduct.js"></script>
-<script>
-  const logoutBtn = document.getElementById('logoutBtn');
-
-logoutBtn.addEventListener('click', async () => {
-  const logout = await fetch('http://localhost:3000/api/user/logout', {
-    method: 'POST'
-  });
-  window.location.href = "/";
-
-})
-
-
-</script>
-
-
 </html>

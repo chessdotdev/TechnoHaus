@@ -32,7 +32,27 @@ const productsSchema = new Schema(
         image: { 
             type: String,
             required: true 
-        } 
+        },
+        category: {
+            type: String,
+            enum: ["PC Build", "Peripheral", "Monitor", "Component"],
+            default: "PC Build"
+        },
+        name: {
+            type: String,
+            trim: true
+        },
+        description: {
+            type: String,
+            trim: true
+        },
+        brand:{
+            type: String,
+            trim: true
+        }
+    },
+    {
+        timestamps: true
     }
 )
 

@@ -2,7 +2,29 @@ import { Products } from "../models/products.model.js";
 
 const createProducts = async (req, res)=>{
         try {
-            const { CPU, GPU, RAM, STORAGE, CASE, image, price} = req.body;
+            const {
+                 CPU, 
+                 GPU, 
+                 RAM, 
+                 STORAGE,
+                 CASE, 
+                 image, 
+                 price, 
+                 category, 
+                 name, 
+                 brand, 
+                 description
+                } = req.body;
+
+                if(!price){
+                    return res.status(400).json({message: "Price is Required"});
+                }
+
+                if(!category || category === "Pc Build"){
+                  if (!CPU) return res.status(400).json({ message: "CPU is required for PC Build" });
+                }else{
+                  if (!name) return res.status(400).json({ message: "Name is required" });
+                }
             
             const newProducts = await Products.create({ 
                 CPU,
@@ -10,6 +32,10 @@ const createProducts = async (req, res)=>{
                 RAM,
                 STORAGE,
                 CASE,
+                name,
+                brand,
+                description,
+                category: category || "Pc Build",
                 price,
                 image
             });
@@ -32,7 +58,12 @@ const createProducts = async (req, res)=>{
 
 const getallProducts = async (req, res)=>{
     try {
-        const allProducts = await Products.find()
+        const { category } = req.query; //?category=Peripheral
+
+        const filter = category ? { category } : {}
+
+        const allProducts = await Products.find(filter).sort({ createdAt: -1 });
+        
 
         res.status(200).json({
             message: "All products retrieved successfully",

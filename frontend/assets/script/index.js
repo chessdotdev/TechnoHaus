@@ -1,5 +1,6 @@
 const BASE_URL = '';
 
+
 // ---- Tab switching ----
 function switchTab(tab) {
   document.getElementById('panel-login').classList.toggle('active', tab === 'login');
@@ -120,3 +121,10 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     btn.innerHTML = `<i class="bi bi-person-check"></i> CREATE ACCOUNT`;
   }
 });
+
+function togglePw(inputId, icon) {
+  const input = document.getElementById(inputId);
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  icon.className = isHidden ? 'bi bi-eye-slash toggle-pw' : 'bi bi-eye toggle-pw';
+}

@@ -9,6 +9,7 @@
     --danger:  #ff4444;
     --text:    #e2e8f0;
     --muted:   #64748b;
+    --nav-h: 64px;
   }
   
   * { box-sizing: border-box; margin: 0; padding: 0; }

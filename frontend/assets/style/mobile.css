@@ -92,6 +92,9 @@
 
   img {
     -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+     user-drag: none;
+     user-select: none;
   }
 
   html, body {

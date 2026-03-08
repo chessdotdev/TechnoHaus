@@ -89,7 +89,6 @@ html, body {
   }
   html, body {
   overscroll-behavior: none; /* Prevent bounce effect */
-  overflow-y: hidden; /* Optional: prevent vertical scroll outside your content */
   -webkit-overflow-scrolling: auto; /* Stop iOS bounce scroll */
    padding-bottom: var(--nav-h);
  }

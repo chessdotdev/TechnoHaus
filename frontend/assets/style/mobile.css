@@ -87,6 +87,9 @@ html, body {
     -webkit-tap-highlight-color: transparent;
     -webkit-user-drag: none;  
   }
+  body {
+    padding-bottom: var(--nav-h);
+  }
 
   input,
   textarea {
@@ -116,14 +119,12 @@ html, body {
     display: block;
   }
 
-  body {
-    padding-bottom: var(--nav-h);
-  }
-
   .main {
     padding: 1.5rem 1rem 2rem;
   }
-
+  .product-card:hover {
+    transform: none
+  }
   .toast-container {
     bottom: calc(var(--nav-h) + 0.5rem);
     right: 0.75rem;

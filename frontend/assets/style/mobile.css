@@ -1,3 +1,6 @@
+html, body {
+  overscroll-behavior: none;
+}
 
 .bottom-nav {
   display: none;
@@ -82,6 +85,7 @@
     -webkit-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;  
   }
 
   input,
@@ -97,8 +101,11 @@
      user-select: none;
   }
 
-  html, body {
-    overscroll-behavior: none;
+ a{
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
   }
 
   .top-bar {

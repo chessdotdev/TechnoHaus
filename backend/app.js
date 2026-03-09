@@ -13,13 +13,13 @@ const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-// Serve static frontend assets (css/js/images)
+// Serve static frontend assets (public)
 app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
+app.use(express.static(path.join(__dirname, '../frontend/public')));
 
 const noCache = (req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');

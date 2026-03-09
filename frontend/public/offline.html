@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>No Connection – TechnoHaus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --bg: #07090d;
+      --accent: #00d4ff;
+      --muted: #64748b;
+      --text: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      justify-content: center; padding: 2rem;
+    }
+
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 44px 44px; pointer-events: none;
+    }
+
+    .wrap { text-align: center; position: relative; z-index: 1; }
+
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.75rem; letter-spacing: 3px;
+      color: var(--accent); margin-bottom: 2.5rem;
+      display: flex; align-items: center;
+      justify-content: center; gap: 0.5rem;
+    }
+
+    .icon {
+      font-size: 4rem; color: var(--muted);
+      display: block; margin-bottom: 1.5rem;
+      animation: pulse 2s ease infinite;
+    }
+
+    .title {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem; font-weight: 900; letter-spacing: 3px;
+      background: linear-gradient(130deg, #ffffff 40%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 0.75rem;
+    }
+
+    .sub {
+      color: var(--muted); font-size: 0.88rem;
+      line-height: 1.6; margin-bottom: 2rem;
+    }
+
+    .btn-retry {
+      padding: 0.85rem 2rem;
+      background: linear-gradient(135deg, #0055ff, #00d4ff);
+      border: none; border-radius: 10px; color: #000;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 2px;
+      cursor: pointer; transition: all 0.25s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+
+    .btn-retry:active { transform: scale(0.97); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.95); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="logo"><i class="bi bi-cpu-fill"></i> TECHNOHAUS</div>
+    <i class="bi bi-wifi-off icon"></i>
+    <div class="title">NO CONNECTION</div>
+    <p class="sub">Looks like you're offline.<br>Check your internet and try again.</p>
+    <button class="btn-retry" id="retryBtn" onclick="retryConnection()">
+      <i class="bi bi-arrow-clockwise"></i> RETRY
+    </button>
+  </div>
+  <script>
+    function retryConnection() {
+      const btn = document.getElementById('retryBtn');
+      btn.innerHTML = `<i class="bi bi-arrow-clockwise"></i> CHECKING...`;
+      btn.disabled = true;
+  
+      // try to ping your backend
+      fetch('http://localhost:3000/api/health')
+        .then(res => {
+          if (res.ok) {
+            // online! go back to app
+            window.location.href = '/';
+          } else {
+            throw new Error();
+          }
+        })
+        .catch(() => {
+          // still offline
+          btn.innerHTML = `<i class="bi bi-wifi-off"></i> STILL OFFLINE`;
+          btn.style.background = '#ff4444';
+          btn.style.color = '#fff';
+          setTimeout(() => {
+            btn.innerHTML = `<i class="bi bi-arrow-clockwise"></i> RETRY`;
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.disabled = false;
+          }, 2000);
+        });
+    }
+  
+    // auto retry every 5 seconds
+    setInterval(() => {
+      fetch('http://localhost:3000/api/health')
+        .then(res => { if (res.ok) window.location.href = '/'; })
+        .catch(() => {});
+    }, 5000);
+  </script>
+</body>
+</html>

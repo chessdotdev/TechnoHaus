@@ -54,5 +54,8 @@ app.use('/api/products', productsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/cart',verifyToken, cartRouter)
 app.use('/api/profile', verifyToken, profileRouter);
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'online' });
+});
 
 export default app;

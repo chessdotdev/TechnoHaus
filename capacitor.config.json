@@ -4,7 +4,8 @@
   "webDir": "frontend/public",
   "server": {
     "url": "https://technohaus.onrender.com",
-    "cleartext": true
+    "cleartext": true,
+    "errorPath": "offline.html"
   },
   "plugins": {
     "SplashScreen": {

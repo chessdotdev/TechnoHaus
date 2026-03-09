@@ -90,13 +90,15 @@
     </button>
   </div>
   <script>
+    const BASE_URL = '';
+
     function retryConnection() {
       const btn = document.getElementById('retryBtn');
       btn.innerHTML = `<i class="bi bi-arrow-clockwise"></i> CHECKING...`;
       btn.disabled = true;
   
       // try to ping your backend
-      fetch('http://localhost:3000/api/health')
+      fetch(`${BASE_URL}/api/health`)
         .then(res => {
           if (res.ok) {
             // online! go back to app
@@ -121,7 +123,7 @@
   
     // auto retry every 5 seconds
     setInterval(() => {
-      fetch('http://localhost:3000/api/health')
+      fetch(`${BASE_URL}/api/health`)
         .then(res => { if (res.ok) window.location.href = '/'; })
         .catch(() => {});
     }, 5000);

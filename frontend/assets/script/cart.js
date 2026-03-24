@@ -277,7 +277,37 @@ document.getElementById('checkoutBtn').onclick = () => {
     showToast('Please select at least one item!', 'error');
     return;
   }
-  showToast('Checkout coming soon!', 'success');
+
+  const selectedItems = cartData.items.filter(item =>
+    checked.includes(String(item.product?._id || item.product))
+  );
+
+  const order = {
+    id: 'ORD-' + Date.now(),
+    date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+    status: 'CONFIRMED',
+    items: selectedItems.map(item => ({
+      name: item.product?.CPU || item.product?.name || 'Custom Build',
+      qty: item.quantity,
+      price: item.product?.price || 0
+    }))
+  };
+
+  const existing = JSON.parse(localStorage.getItem('th_orders') || '[]');
+  existing.unshift(order);
+  localStorage.setItem('th_orders', JSON.stringify(existing));
+
+  const overlay = document.getElementById('checkout-overlay');
+  const spinner = document.getElementById('checkout-spinner');
+  const msg     = document.getElementById('checkout-msg');
+
+  overlay.style.display = 'flex';
+
+  setTimeout(() => {
+    spinner.style.display = 'none';
+    msg.style.display     = 'block';
+    setTimeout(() => { window.location.href = '/orders'; }, 1500);
+  }, 5000);
 };
 
 loadCart();

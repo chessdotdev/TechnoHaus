@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#00d4ff">
+  <link rel="canonical" href="https://technohaus.onrender.com/orders">
+  <link rel="icon" type="image/x-icon" href="../assets/image/favicon/technohauslogo.jpg">
+  <title>My Orders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../assets/style/global.css">
+  <link rel="stylesheet" href="../assets/style/mobile.css">
+  <style>
+    .main { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+    .page-pill {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.2);
+      color: var(--accent); font-family: 'Orbitron', monospace;
+      font-size: 0.65rem; letter-spacing: 2.5px;
+      padding: 0.3rem 0.9rem; border-radius: 20px; margin-bottom: 1rem;
+    }
+    .page-header { margin-bottom: 2.5rem; animation: fadeUp 0.5s ease both; }
+    .page-header h1 {
+      font-family: 'Orbitron', monospace; font-weight: 900;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      background: linear-gradient(130deg, #ffffff 40%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .order-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem; margin-bottom: 1rem;
+      animation: fadeUp 0.4s ease both; position: relative; overflow: hidden;
+    }
+    .order-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--success), transparent);
+    }
+    .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    .order-id { font-size: 0.72rem; letter-spacing: 1.5px; color: var(--accent); }
+    .order-badge {
+      background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.3);
+      color: #00e676; font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; letter-spacing: 1.5px; padding: 0.25rem 0.75rem; border-radius: 20px;
+    }
+    .order-item { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+    .order-item:last-of-type { border-bottom: none; }
+    .order-item span:last-child { font-size: 0.78rem; color: var(--text); }
+    .order-total { display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .order-total-label { font-family: 'Orbitron', monospace; font-size: 0.7rem; letter-spacing: 1.5px; color: var(--muted); }
+    .order-total-value { font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 900; color: white }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover { background: var(--danger); color: white; }
+    .nav-link {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <!-- Desktop -->
+  <div class="top-bar">
+    <div class="top-left" style="display:flex;align-items:center;gap:1.25rem">
+      <a href="/cart" class="nav-link"><i class="bi bi-arrow-left"></i> Back</a>
+    </div>
+    <div class="top-right">
+      <a href="/orders" class="nav-link"><i class="bi bi-bag-check"></i> Orders</a>
+      <button class="btn-logout" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    </div>
+  </div>
+
+  <!-- Mobile -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <a href="/product" class="bnav-item"><i class="bi bi-grid-3x3-gap-fill"></i>Products</a>
+      <a href="/pcbuilder" class="bnav-item"><i class="bi bi-stars"></i>AI BUILD</a>
+      <a href="/cart" class="bnav-item"><i class="bi bi-cart3"></i>CART</a>
+      <a href="/orders" class="bnav-item active"><i class="bi bi-bag-check"></i>ORDERS</a>
+      <a href="/profile" class="bnav-item"><i class="bi bi-person-circle"></i>PROFILE</a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="page-header">
+      <div class="page-pill"><i class="bi bi-bag-check"></i> ORDERS</div>
+      <h1>My Orders</h1>
+    </div>
+
+    <div id="orders-list"></div>
+  </div>
+
+  <script>
+    const fmt = (n) => new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(n || 0);
+
+    const orders = JSON.parse(localStorage.getItem('th_orders') || '[]');
+    const list = document.getElementById('orders-list');
+
+    if (orders.length === 0) {
+      list.innerHTML = `
+        <div style="text-align:center;padding:5rem 1rem">
+          <i class="bi bi-bag-x" style="font-size:4rem;color:var(--border);display:block;margin-bottom:1rem"></i>
+          <div style="font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:2px;color:var(--muted);margin-bottom:0.5rem">NO ORDERS YET</div>
+          <a href="/product" style="color:var(--accent);font-size:0.82rem">Browse products</a>
+        </div>`;
+    } else {
+      orders.forEach((order, i) => {
+        const total = order.items.reduce((s, it) => s + it.price * it.qty, 0);
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.style.animationDelay = `${i * 100}ms`;
+        card.innerHTML = `
+          <div class="order-header">
+            <span class="order-id"><i class="bi bi-receipt"></i> ${order.id}</span>
+            <span class="order-badge"><i class="bi bi-check-circle-fill"></i> ${order.status}</span>
+          </div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.75rem">${order.date}</div>
+          ${order.items.map(it => `
+            <div class="order-item">
+              <span>${it.name} ×${it.qty}</span>
+              <span>${fmt(it.price * it.qty)}</span>
+            </div>`).join('')}
+          <div class="order-total">
+            <span class="order-total-label">TOTAL</span>
+            <span class="order-total-value">${fmt(total)}</span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    document.getElementById('logoutBtn').onclick = async () => {
+      await fetch('/api/user/logout', { method: 'POST', credentials: 'include' });
+      window.location.href = '/';
+    };
+  </script>
+  <script src="../assets/script/network.js"></script>
+</body>
+</html>

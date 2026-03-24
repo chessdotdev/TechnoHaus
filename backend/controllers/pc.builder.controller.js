@@ -24,6 +24,24 @@ const generateBuild = async (req, res) => {
       });
     }
 
+    const pcKeywords = [
+      'pc', 'build', 'gaming', 'game', 'render', 'rendering', 'edit', 'editing',
+      'video', 'stream', 'streaming', 'office', 'work', 'workstation', 'budget',
+      'performance', 'cpu', 'gpu', 'ram', 'processor', 'graphics', 'storage',
+      'ssd', 'hdd', 'intel', 'amd', 'nvidia', 'ryzen', 'core', 'programming',
+      'coding', 'design', '3d', 'animation', 'school', 'student', 'everyday',
+      'fast', 'powerful', 'cheap', 'affordable', 'high-end', 'mid-range', 'low-end'
+    ];
+
+    const descLower = description.toLowerCase();
+    const isRelevant = pcKeywords.some(kw => descLower.includes(kw));
+
+    if (!isRelevant) {
+      return res.status(400).json({
+        message: "Description must be related to PC building (e.g. 'gaming PC', 'video editing workstation', 'budget office build').",
+      });
+    }
+
 
     const tolerance = 0.1;
     const maxPrice = budgetNum * (1 + tolerance);
@@ -38,7 +56,7 @@ const generateBuild = async (req, res) => {
     if (!products.length) {
       return res.status(404).json({
         message: `No products available within your budget of ${budgetNum} PHP`,
-      });
+      }); 
     }
 
 
@@ -50,7 +68,7 @@ const generateBuild = async (req, res) => {
         - DO NOT invent parts.
         - DO NOT modify part names.
         - If a valid build is not possible, return null values.
-
+        - If the description is unrelated, informal, unclear, or not in English or Tagalog, return all values as null.
         USER REQUIREMENTS:
         - Budget: ${budgetNum} PHP.
         - Description: ${description}.

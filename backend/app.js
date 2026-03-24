@@ -48,6 +48,9 @@ app.get('/cart', noCache, verifyToken, checkRole(["admin","customer"]), (req, re
 app.get('/profile', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/public/profile.html'));
 });
+app.get('/orders', noCache, verifyToken, checkRole(["admin","customer"]), (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/public/orders.html'));
+});
 
 // API routes
 app.use('/api/products', productsRouter);
